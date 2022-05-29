@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const EndTimeInput = styled.input`
+    margin-bottom: 10px;
     @media only screen and (max-width: 990px) {
         margin-top: 10px;
     }

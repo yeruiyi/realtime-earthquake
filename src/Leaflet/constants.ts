@@ -1,4 +1,4 @@
-const mapHeight = { height: 'calc(100vh - 56px)' };
+const mapHeight = { height: 'calc(100vh)' };
 
 const tileLayers = [
   {

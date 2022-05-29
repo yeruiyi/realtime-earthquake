@@ -6,6 +6,7 @@ const mediaQueryMargin = css`
 
 const Container = styled.div`
   margin-right: 10px;
+  margin-bottom:20px;
 
   @media only screen and (max-width: 990px) {
     ${mediaQueryMargin}
