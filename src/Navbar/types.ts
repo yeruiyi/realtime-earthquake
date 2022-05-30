@@ -5,4 +5,5 @@ export default {
   endTimeChanged: `${prefix}/endTimeChanged`,
   numOfDaysChanged: `${prefix}/numOfDaysChanged`,
   searchcircleChanged: `${prefix}/searchcircleChanged`,
+  mapFocusChanged:`${prefix}/mapFocusChanged`,
 };

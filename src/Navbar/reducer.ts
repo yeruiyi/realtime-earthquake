@@ -8,6 +8,9 @@ interface IEarthquakesReducer {
   longitude: number | null;
   latitude: number | null;
   maxradius: number | null;
+  focusLat: number,
+  focusLon: number,
+  zoomLevel: number
 }
 
 const initialState: IEarthquakesReducer = {
@@ -17,6 +20,9 @@ const initialState: IEarthquakesReducer = {
   longitude: null,
   latitude: null,
   maxradius: null,
+  focusLat: 0,
+  focusLon: 0,
+  zoomLevel: 3
 
 };
 
@@ -45,6 +51,13 @@ export default (state = initialState, action: IAction) => {
         longitude: action.payload.longitude,
         latitude: action.payload.latitude,
         maxradius: action.payload.maxradius
+      };
+    case types.mapFocusChanged:
+      return {
+        ...state,
+        focusLon: action.payload.focusLon,
+        focusLat: action.payload.focusLat,
+        zoomLevel: action.payload.zoomLevel
       };
     default:
       return state;

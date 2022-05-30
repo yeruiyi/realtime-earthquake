@@ -31,4 +31,13 @@ const changeSearchCircle = (longitude: number|null, latitude: number|null, maxra
   }
 });
 
-export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle };
+const changeFocus = (focusLat:number, focusLon:number, zoomLevel:number): IAction => ({
+  type: types.mapFocusChanged,
+  payload: {
+    focusLat,
+    focusLon,
+    zoomLevel
+  }
+});
+
+export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus  };

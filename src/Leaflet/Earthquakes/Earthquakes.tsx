@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import L, { LatLng, GeoJSON } from 'leaflet';
+import L, { LatLng, GeoJSON, latLng } from 'leaflet';
 import { useMap } from 'react-leaflet';
 
 import Spinner from '../../Spinner';
@@ -13,10 +13,18 @@ import { FeatureProps } from './models';
 let geojson: GeoJSON;
 
 export default function Earthquakes() {
-  const { startTime, endTime, longitude, latitude, maxradius } = useSelector(({ navbar }: RooState) => navbar);
+  const { startTime, endTime, longitude, latitude, maxradius,focusLat, focusLon } = useSelector(({ navbar }: RooState) => navbar);
   const [earthquakes, loading] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius);
 
   const map = useMap();
+
+  if (map && focusLat !==0 && focusLon !=0 ) {
+    const coordinates = latLng(focusLat, focusLon);
+    map.flyTo(coordinates, 15, {
+      duration: 2
+    })
+  }
+
   useEffect(() => {
     if (map && geojson && map.hasLayer(geojson)) map.removeLayer(geojson);
 
@@ -28,7 +36,9 @@ export default function Earthquakes() {
       }
     });
 
+
     if (map) geojson.addTo(map);
+
   }, [earthquakes, map]);
 
   if (loading) return <Spinner />;
