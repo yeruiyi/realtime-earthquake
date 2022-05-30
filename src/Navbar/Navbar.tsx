@@ -35,6 +35,7 @@ const Header = styled.div`
   color:#ffffff;
   font-size: 2em;
   margin-bottom: 50px;
+  margin-top: 30px;
 `;
 
 const NavContainer = styled.div`

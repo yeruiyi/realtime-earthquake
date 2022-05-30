@@ -1,4 +1,5 @@
 export interface FeatureProps {
+  id:string;
   geometry: any;
   properties: {
     mag: number;
