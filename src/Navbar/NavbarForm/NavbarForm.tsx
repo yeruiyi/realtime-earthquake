@@ -1,7 +1,7 @@
 import React, { useState, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
-
-import { EndTimeInput, Icon, LongitudeInput, LatitudeInput, MaxradiusInput } from './styles';
+import { Input, InputGroup, InputGroupText } from 'reactstrap';
+import { EndTimeInput, Icon } from './styles';
 import InfoTip from './Infotip';
 import { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle} from '../actions';
 
@@ -58,28 +58,44 @@ export default function NavBarForm() {
   };
   return (
     <form className="form-inline my-lg-0" onSubmit={onSubmit}>
-      <LongitudeInput
-          className="form-control mr-sm-2"
-          id="longitude"
-          value={longitude}
-          type="number"
-          onChange={handleLongitudeChange}
-      />
-      <LatitudeInput
-         className="form-control mr-sm-2"
-          id="latitude"
-          value={latitude}
-          type="number"
-          onChange={handleLatitudeChange}
-      />
-      <MaxradiusInput
-          className="form-control mr-sm-2"
-          id="latitude"
-          value={maxradius}
-          type="number"
-          onChange={handleMaxradiusChange}
-      />
-
+      <div>
+        <InputGroup>
+          <InputGroupText>
+            Longitude
+          </InputGroupText>
+          <Input
+            id="longitude"
+            value={longitude}
+            type="number"
+            onChange={handleLongitudeChange}
+          />
+        </InputGroup>
+        <br />
+        <InputGroup>
+          <InputGroupText>
+            Latitude
+          </InputGroupText>
+          <Input
+            id="latitude"
+            value={latitude}
+            type="number"
+            onChange={handleLatitudeChange}
+          />
+        </InputGroup>
+        <br/>
+        <InputGroup>
+          <InputGroupText>
+            Max Radius
+          </InputGroupText>
+          <Input
+            id="maxradius"
+            value={maxradius}
+            type="number"
+            onChange={handleMaxradiusChange}
+          />
+        </InputGroup>
+        <br/>
+      </div>
       <div className="input-group">
         <input
           className="form-control"

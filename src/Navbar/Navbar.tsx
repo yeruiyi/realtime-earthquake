@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 import DropdownList from './DropdownList';
 import NavBarForm from './NavbarForm';
-
+import TextData from './TextData';
 // const brandStyle = { color: '#ffffff' };
 
 export default function NavBar() {
@@ -13,9 +13,12 @@ export default function NavBar() {
 
   return (
     <Sidebar>
-      <Header>Earthquake</Header>
-      <DropdownList/>
-      <NavBarForm/>
+      <NavContainer>
+        <Header>Earthquake</Header>
+        <DropdownList/>
+        <NavBarForm/>
+        <TextData/>
+      </NavContainer>
     </Sidebar>
   );
 }
@@ -33,3 +36,10 @@ const Header = styled.div`
   font-size: 2em;
   margin-bottom: 50px;
 `;
+
+const NavContainer = styled.div`
+  margin-left: 20px;
+  margin-right: 20px;
+`;
+
+
