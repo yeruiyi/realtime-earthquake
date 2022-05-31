@@ -25,7 +25,6 @@ const MaxradiusInput = styled.input`
     }
 `;
 
-
 const Icon = styled.i`
     cursor: pointer;
     border: none !important;

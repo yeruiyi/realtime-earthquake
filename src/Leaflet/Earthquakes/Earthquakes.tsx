@@ -18,7 +18,7 @@ export default function Earthquakes() {
 
   const map = useMap();
 
-  if (map && focusLat !==0 && focusLon !=0 ) {
+  if (map && focusLat !== 0 && focusLon !== 0 ) {
     const coordinates = latLng(focusLat, focusLon);
     map.flyTo(coordinates, 15, {
       duration: 2
