@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import Leaflet from './Leaflet';
 import NavBar from './Navbar';
 import store from './store';
-
+import TimeSlider from './Navbar/TimeSlider';
 export default function App() {
   return (
     <>
@@ -13,9 +13,7 @@ export default function App() {
       <Provider store={store}>
         <NavBar />
         <Leaflet />
-        {/* <BodyContainer>
-          <Leaflet />
-        </BodyContainer> */}
+        <TimeSlider/>
       </Provider>
     </>
   );

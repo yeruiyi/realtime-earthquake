@@ -71,14 +71,17 @@ const TextContainer = styled.div`
     background-color: #ffffff;
     margin-top:10px;
 `;
+
 const CardWrapper = styled.div`
     height:100%;
     width:100%;
     display: flex;
 `;
+
 const CardTxt = styled.div`
     width:80%;
 `;
+
 const ButtonContainer = styled.div`
     width:20%;
     margin: auto;
