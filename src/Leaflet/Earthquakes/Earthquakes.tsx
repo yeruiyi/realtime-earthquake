@@ -9,7 +9,6 @@ import { RooState } from '../../store';
 import { onEachFeature } from './utils';
 import { geojsonMarkerOptions } from '../utils';
 import { FeatureProps } from './models';
-import OrderByList from '../../Navbar/OrderByList';
 
 let geojson: GeoJSON;
 

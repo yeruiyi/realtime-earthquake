@@ -1,9 +1,13 @@
 import React, { useState, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { Input, InputGroup, InputGroupText } from 'reactstrap';
-import { EndTimeInput, Icon } from './styles';
+import { EndTimeInput, Icon, OrderByContainer } from './styles';
 import InfoTip from './Infotip';
-import { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle} from '../actions';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeOrderBy } from '../actions';
 
 export default function NavBarForm() {
   const dispatch = useDispatch();
@@ -12,6 +16,7 @@ export default function NavBarForm() {
   const [longitude, setLongitude] = useState('');
   const [latitude, setlatitude] = useState('');
   const [maxradius, setmaxradius] = useState('');
+  const [orderBy, setOrderBy] = useState('');
   const [startTimeTooltipOpen, setStartTimeTooltipOpen] = useState(false);
   const [endTimeTooltipOpen, setEndTimeTooltipOpen] = useState(false);
   const [toggleIcon, setToggleIcon] = useState(false);
@@ -23,17 +28,19 @@ export default function NavBarForm() {
     // pass the query params to be able to perform query
     dispatch(changeStartTime(startTime));
     dispatch(changeEndTime(endTime));
-    if (longitude!=='null' && latitude!=='null'&& maxradius!=='null') {
+    if (longitude.length !== 0 && latitude.length !== 0  && maxradius.length !== 0) {
       dispatch(changeSearchCircle(Number(longitude),Number(latitude),Number(maxradius)));
     } else {
-      dispatch(changeSearchCircle(null,null,null));
+      dispatch(changeSearchCircle(null,null,null))
     }
-    // clear start end input values
+    dispatch(changeOrderBy(orderBy));
+
     setStartTime('');
     setEndTime('');
-    setLongitude('null');
-    setlatitude('null');
-    setmaxradius('null');
+    setLongitude('');
+    setlatitude('');
+    setmaxradius('');
+    setOrderBy('');
 
   };
 
@@ -56,6 +63,14 @@ export default function NavBarForm() {
   const handleMaxradiusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setmaxradius(e.target.value);
   };
+
+  const selectOrderBy = (event: SelectChangeEvent) => {
+    const dropdownvalue = event.target.value;
+    if (dropdownvalue) {
+      setOrderBy(dropdownvalue);
+    }
+  };
+
   return (
     <form className="form-inline my-lg-0" onSubmit={onSubmit}>
       <div>
@@ -134,6 +149,24 @@ export default function NavBarForm() {
         tooltipOpen={endTimeTooltipOpen}
         setTooltipOpen={setEndTimeTooltipOpen}
       />
+
+      <OrderByContainer>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="demo-simple-select-standard-label">Order By</InputLabel>
+          <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={orderBy}
+              label="Order By"
+              onChange={selectOrderBy}
+          >
+            <MenuItem value="time">Time</MenuItem>
+            <MenuItem value="time-asc">Time-Asc</MenuItem>
+            <MenuItem value="magnitude">Magnitude</MenuItem>
+            <MenuItem value="magnitude-asc">Magnitude-Asc</MenuItem>
+          </Select>
+        </FormControl>
+      </OrderByContainer>
       <button className="btn btn-outline-success my-2 my-sm-0" type="submit">
         Search
       </button>

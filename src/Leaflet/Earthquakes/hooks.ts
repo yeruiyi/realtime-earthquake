@@ -5,8 +5,8 @@ import getEarthquakes from './services';
 export default function useEarthquakesFetcher(
   startTime: string,
   endTime: string,
-  latitude: number,
   longitude: number,
+  latitude: number,
   maxradius: number,
   orderby: string
   
@@ -21,7 +21,7 @@ export default function useEarthquakesFetcher(
 
     const fetchEarthquakes = async () => {
       try {
-        const data = await getEarthquakes(startTime, endTime, latitude, longitude, maxradius, orderby);
+        const data = await getEarthquakes(startTime, endTime, longitude, latitude, maxradius, orderby );
         setEarthquakes(data);
       } catch (err) {
         setError(true);
@@ -30,7 +30,7 @@ export default function useEarthquakesFetcher(
     };
 
     fetchEarthquakes();
-  }, [startTime, endTime, latitude, longitude, maxradius, orderby ]);
+  }, [startTime, endTime, longitude, latitude, maxradius, orderby ]);
 
   return [earthquakes, loading, error];
 }

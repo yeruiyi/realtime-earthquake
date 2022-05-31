@@ -32,4 +32,11 @@ const Icon = styled.i`
     outline: none !important;
 `;
 
-export { EndTimeInput, Icon, LongitudeInput, LatitudeInput, MaxradiusInput };
+const OrderByContainer = styled.div`
+  background-color: #ffffff;
+  width: fit-content;
+  height: fit-content;
+  margin-top: 10px;
+`;
+
+export { EndTimeInput, Icon, LongitudeInput, LatitudeInput, MaxradiusInput, OrderByContainer};
