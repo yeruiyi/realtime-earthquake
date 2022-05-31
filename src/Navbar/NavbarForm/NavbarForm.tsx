@@ -1,7 +1,7 @@
 import React, { useState, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { Input, InputGroup, InputGroupText } from 'reactstrap';
-import { EndTimeInput, Icon, OrderByContainer } from './styles';
+import { StartTimeInput, EndTimeInput, OrderByContainer, ButtonContainer } from './styles';
 import InfoTip from './Infotip';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
@@ -19,7 +19,7 @@ export default function NavBarForm() {
   const [orderBy, setOrderBy] = useState('');
   const [startTimeTooltipOpen, setStartTimeTooltipOpen] = useState(false);
   const [endTimeTooltipOpen, setEndTimeTooltipOpen] = useState(false);
-  const [toggleIcon, setToggleIcon] = useState(false);
+  // const [toggleIcon, setToggleIcon] = useState(false);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -44,7 +44,7 @@ export default function NavBarForm() {
 
   };
 
-  const changeIcon = () => setToggleIcon(!toggleIcon);
+  // const changeIcon = () => setToggleIcon(!toggleIcon);
 
   const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStartTime(e.target.value);
@@ -111,18 +111,18 @@ export default function NavBarForm() {
         </InputGroup>
         <br/>
       </div>
-      <div className="input-group">
+      {/* <div className="input-group">
         <input
           className="form-control"
           id="startTime"
-          type={toggleIcon ? 'text' : 'date'}
+          type={'date'}
           value={startTime}
           onChange={handleStartTimeChange}
         />
         <div className="input-group-append mr-sm-2">
           <span className="input-group-text">
             <Icon
-              className={`fa fa-${toggleIcon ? 'calendar' : 'pencil'}`}
+              className={`fa fa-${ 'calendar'}`}
               tabIndex={0}
               role="button"
               onClick={changeIcon}
@@ -130,29 +130,36 @@ export default function NavBarForm() {
             />
           </span>
         </div>
+      </div> */}
+      <div>
+        <StartTimeInput
+          className="form-control mr-sm-2"
+          id="startTime"
+          type="date"
+          value={startTime}
+          onChange={handleStartTimeChange}
+        />
+        <InfoTip
+          target="startTime"
+          tooltipOpen={startTimeTooltipOpen}
+          setTooltipOpen={setStartTimeTooltipOpen}
+        />
+        <EndTimeInput
+          className="form-control mr-sm-2"
+          id="endTime"
+          type="date"
+          value={endTime}
+          onChange={handleEndTimeChange}
+        />
+        <InfoTip
+          target="endTime"
+          tooltipOpen={endTimeTooltipOpen}
+          setTooltipOpen={setEndTimeTooltipOpen}
+        />
       </div>
-      <InfoTip
-        target="startTime"
-        tooltipOpen={startTimeTooltipOpen}
-        setTooltipOpen={setStartTimeTooltipOpen}
-      />
-      <EndTimeInput
-        className="form-control mr-sm-2"
-        id="endTime"
-        type="date"
-        disabled={toggleIcon ? true : false}
-        value={endTime}
-        onChange={handleEndTimeChange}
-      />
-      <InfoTip
-        target="endTime"
-        tooltipOpen={endTimeTooltipOpen}
-        setTooltipOpen={setEndTimeTooltipOpen}
-      />
-
       <OrderByContainer>
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel id="demo-simple-select-standard-label">Order By</InputLabel>
+        <FormControl variant="standard" sx={{ s: 0.5, minWidth: 120 }}>
+          <InputLabel id="demo-simple-select-standard-label">&nbsp;Order By</InputLabel>
           <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
@@ -167,9 +174,11 @@ export default function NavBarForm() {
           </Select>
         </FormControl>
       </OrderByContainer>
-      <button className="btn btn-outline-success my-2 my-sm-0" type="submit">
-        Search
-      </button>
+      <ButtonContainer>
+        <button className="btn btn-outline-success my-2 my-sm-0"  type="submit">
+          Search
+        </button>
+      </ButtonContainer>
     </form>
   );
 }

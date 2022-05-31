@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 
+const StartTimeInput = styled.input`
+    margin-bottom: 10px;
+    @media only screen and (max-width: 990px) {
+        margin-top: 10px;
+    }
+`;
+
 const EndTimeInput = styled.input`
     margin-bottom: 10px;
     @media only screen and (max-width: 990px) {
@@ -36,6 +43,12 @@ const OrderByContainer = styled.div`
   width: fit-content;
   height: fit-content;
   margin-top: 10px;
+  border-radius: 3px;
+  margin-bottom:10px;
 `;
 
-export { EndTimeInput, Icon, LongitudeInput, LatitudeInput, MaxradiusInput, OrderByContainer};
+const ButtonContainer = styled.div`
+  margin-left: auto;
+`;
+
+export { StartTimeInput, EndTimeInput,  LongitudeInput, LatitudeInput, MaxradiusInput, OrderByContainer, ButtonContainer};

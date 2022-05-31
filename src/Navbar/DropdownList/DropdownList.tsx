@@ -35,7 +35,7 @@ export default function DropdownList() {
       <Dropdown
         isOpen={dropdownOpen}
         toggle={changeDropdownIcon}
-        direction={dropdownOpen ? 'up' : 'down'}>
+        direction={'down'}>
         <DropdownToggle caret>{numOfDays}</DropdownToggle>
         <DropdownMenu>
           {periods.map(({ id, name }) => (

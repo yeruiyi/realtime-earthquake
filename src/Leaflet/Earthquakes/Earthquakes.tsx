@@ -20,7 +20,7 @@ export default function Earthquakes() {
 
   if (map && focusLat !== 0 && focusLon !== 0 ) {
     const coordinates = latLng(focusLat, focusLon);
-    map.flyTo(coordinates, 15, {
+    map.flyTo(coordinates, 13, {
       duration: 2
     })
 
