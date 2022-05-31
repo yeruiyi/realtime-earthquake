@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import DropdownList from './DropdownList';
 import NavBarForm from './NavbarForm';
+import OrderByList from './OrderByList';
 import TextData from './TextData';
 // const brandStyle = { color: '#ffffff' };
 
@@ -17,6 +18,7 @@ export default function NavBar() {
         <Header>Earthquake</Header>
         <DropdownList/>
         <NavBarForm/>
+        <OrderByList/>
         <TextData/>
       </NavContainer>
     </Sidebar>

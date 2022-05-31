@@ -9,8 +9,8 @@ import { changeFocus } from '../actions';
 
 export default function TextData() {
     const dispatch = useDispatch();
-    const { startTime, endTime, longitude, latitude, maxradius } = useSelector(({ navbar }: RooState) => navbar);
-    const [earthquakes, loading] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius);
+    const { startTime, endTime, longitude, latitude, maxradius, orderby } = useSelector(({ navbar }: RooState) => navbar);
+    const [earthquakes, loading] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby);
 
     const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -45,7 +45,7 @@ export default function TextData() {
                                     </div>
                                 </CardTxt>
                                 <ButtonContainer>
-                                    <Button onClick={buttonHandler} value={[lat,lon]}>
+                                    <Button onClick={buttonHandler} value={[lat,lon,]}>
                                         {feature.properties.mag.toFixed(1)}
                                     </Button>
                                 </ButtonContainer>

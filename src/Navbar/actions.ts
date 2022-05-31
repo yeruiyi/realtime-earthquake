@@ -27,7 +27,7 @@ const changeSearchCircle = (longitude: number|null, latitude: number|null, maxra
   payload: {
     longitude,
     latitude,
-    maxradius
+    maxradius,
   }
 });
 
@@ -40,4 +40,11 @@ const changeFocus = (focusLat:number, focusLon:number, zoomLevel:number): IActio
   }
 });
 
-export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus  };
+const changeOrderBy = (orderby: string): IAction => ({
+  type: types.orderByChanged,
+  payload: {
+   orderby,
+  }
+});
+
+export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus, changeOrderBy  };

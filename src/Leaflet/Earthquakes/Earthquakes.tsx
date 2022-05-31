@@ -9,12 +9,13 @@ import { RooState } from '../../store';
 import { onEachFeature } from './utils';
 import { geojsonMarkerOptions } from '../utils';
 import { FeatureProps } from './models';
+import OrderByList from '../../Navbar/OrderByList';
 
 let geojson: GeoJSON;
 
 export default function Earthquakes() {
-  const { startTime, endTime, longitude, latitude, maxradius,focusLat, focusLon } = useSelector(({ navbar }: RooState) => navbar);
-  const [earthquakes, loading] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius);
+  const { startTime, endTime, longitude, latitude, maxradius, orderby, focusLat, focusLon } = useSelector(({ navbar }: RooState) => navbar);
+  const [earthquakes, loading] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby);
 
   const map = useMap();
 
@@ -23,6 +24,8 @@ export default function Earthquakes() {
     map.flyTo(coordinates, 15, {
       duration: 2
     })
+
+    
   }
 
   useEffect(() => {
