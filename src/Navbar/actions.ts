@@ -31,6 +31,15 @@ const changeSearchCircle = (longitude: number|null, latitude: number|null, maxra
   }
 });
 
+const changeSearchRectangle = (minlongitude: number|null, minlatitude: number|null, maxlongitude: number|null,maxlatitude: number|null): IAction => ({
+  type: types.searchRectangleChanged,
+  payload: {
+    minlongitude,
+    minlatitude,
+    maxlongitude,
+    maxlatitude
+  }
+});
 const changeFocus = (focusLat:number, focusLon:number, zoomLevel:number): IAction => ({
   type: types.mapFocusChanged,
   payload: {
@@ -47,4 +56,6 @@ const changeOrderBy = (orderby: string): IAction => ({
   }
 });
 
-export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus, changeOrderBy  };
+
+
+export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus, changeOrderBy, changeSearchRectangle  };

@@ -11,7 +11,11 @@ interface IEarthquakesReducer {
   orderby: string
   focusLat: number,
   focusLon: number,
-  zoomLevel: number
+  zoomLevel: number,
+  minlongitude: number | null; 
+  minlatitude: number | null; 
+  maxlongitude: number | null; 
+  maxlatitude: number | null;
 }
 
 const initialState: IEarthquakesReducer = {
@@ -24,7 +28,11 @@ const initialState: IEarthquakesReducer = {
   orderby: 'time',
   focusLat: 0,
   focusLon: 0,
-  zoomLevel: 3
+  zoomLevel: 3,
+  minlongitude: null, 
+  minlatitude: null, 
+  maxlongitude: null,  
+  maxlatitude: null, 
 
 };
 
@@ -53,6 +61,14 @@ export default (state = initialState, action: IAction) => {
         longitude: action.payload.longitude,
         latitude: action.payload.latitude,
         maxradius: action.payload.maxradius
+      };
+    case types.searchRectangleChanged:
+      return {
+        ...state,
+        minlongitude: action.payload.minlongitude,
+        minlatitude: action.payload.minlatitude,
+        maxlongitude: action.payload.maxlongitude,
+        maxlatitude:action.payload.maxlatitude,
       };
     case types.mapFocusChanged:
       return {

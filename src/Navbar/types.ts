@@ -6,5 +6,6 @@ export default {
   numOfDaysChanged: `${prefix}/numOfDaysChanged`,
   searchcircleChanged: `${prefix}/searchcircleChanged`,
   mapFocusChanged:`${prefix}/mapFocusChanged`,
-  orderByChanged:`${prefix}/orderByChanged`
+  orderByChanged:`${prefix}/orderByChanged`,
+  searchRectangleChanged:`${prefix}/searchRectangleChanged`
 };

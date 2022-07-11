@@ -13,8 +13,8 @@ import { FeatureProps } from './models';
 let geojson: GeoJSON;
 
 export default function Earthquakes() {
-  const { startTime, endTime, longitude, latitude, maxradius, orderby, focusLat, focusLon } = useSelector(({ navbar }: RooState) => navbar);
-  const [earthquakes, loading] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby);
+  const { startTime, endTime, longitude, latitude, maxradius, orderby, focusLat, focusLon, minlongitude, minlatitude, maxlongitude, maxlatitude } = useSelector(({ navbar }: RooState) => navbar);
+  const [earthquakes, loading] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude);
 
   const map = useMap();
 
@@ -40,6 +40,7 @@ export default function Earthquakes() {
 
 
     if (map) geojson.addTo(map);
+    
 
   }, [earthquakes, map]);
 
