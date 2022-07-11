@@ -8,10 +8,10 @@ interface IEarthquakesReducer {
   longitude: number | null;
   latitude: number | null;
   maxradius: number | null;
-  orderby: string
-  focusLat: number,
-  focusLon: number,
-  zoomLevel: number,
+  orderby: string;
+  focusLat: number;
+  focusLon: number;
+  zoomLevel: number;
   minlongitude: number | null; 
   minlatitude: number | null; 
   maxlongitude: number | null; 

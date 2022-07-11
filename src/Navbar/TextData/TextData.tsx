@@ -27,6 +27,12 @@ export default function TextData() {
                 {earthquakes.features.map((feature: textProps) => {
                     const lat = feature.geometry.coordinates[1]
                     const lon = feature.geometry.coordinates[0]
+                    var mag = feature.properties.mag
+                    if(feature.properties.mag){
+                        mag = feature.properties.mag
+                    } else {
+                        mag = 0
+                    }
                     return(
                         <Card body key={feature.id}>
                             <CardTitle tag="h5">
@@ -46,7 +52,7 @@ export default function TextData() {
                                 </CardTxt>
                                 <ButtonContainer>
                                     <Button onClick={buttonHandler} value={[lat,lon,]}>
-                                        {feature.properties.mag.toFixed(1)}
+                                        {mag.toFixed(1)}
                                     </Button>
                                 </ButtonContainer>
                             </CardWrapper>
