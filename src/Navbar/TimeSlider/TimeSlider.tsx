@@ -8,13 +8,33 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import { changeStartTime, changeEndTime } from '../actions';
-
+import { styled as muiStyle } from '@mui/material/styles';
 
 function valuetext (value: number) {
     const ret = value;
     return `${ret}`;
 }
 
+function format(inputDate: Date,inputType: number) {
+    let date,month;
+
+    const monthArray = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sept", "Oct", "Nov", "Dec" ];
+
+    date = inputDate.getDate();
+    month = monthArray[inputDate.getMonth()];
+    // year = inputDate.getFullYear();
+  
+      date = date
+          .toString()
+          .padStart(2, '0');
+    
+    if (inputType===3) {
+        return `${date}/${month}`;
+    } else {
+        return `${date}/${month}`;
+    }
+}
 // function rangeTypography (value:number[]) {
 //     if (JSON.stringify(value) !== JSON.stringify([0, 180])) {
 //         const [firstDraft, secondDraft] = value;
@@ -28,11 +48,12 @@ export default function TimeSlider() {
     const dispatch = useDispatch();
     const [rangeType, setRangeType] = useState('');
     const [range, setRange] = useState([0, 0]);
-    const [minRange, setMinRange] = useState(1);
-    const [maxRange, setMaxRange] = useState(31);
+    const [minRange, setMinRange] = useState(0);
+    const [maxRange, setMaxRange] = useState(0);
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const currentDate = new Date();
+
     const dates = (firstDraft: number , secondDraft: number ) => {
         const firstDate = new Date();
         const secondDate = new Date();
@@ -77,7 +98,7 @@ export default function TimeSlider() {
 
     function valueLabelFormat (value: number) {
         const newValue = value ;
-        if (newValue === 2022 || newValue ===12 || newValue === 44) {
+        if (newValue === 44) {
             return 'Today';
         }
 
@@ -88,18 +109,24 @@ export default function TimeSlider() {
             "Jul", "Aug", "Sept", "Oct", "Nov", "Dec" ];
             var tempMonth = currentMonth - (12 - value) 
             if (tempMonth < 0 ) {
-                var ret = month[(currentMonth + value)]
+                var retMonth = month[(currentMonth + value)]
+                var ret = `${retMonth}/${currentYear-1}`
             } else {
-                var ret = month[(tempMonth)]
+                var retMonth = month[(tempMonth)]
+                var ret = `${retMonth}/${currentYear}`
             }
         } else {
             //todo:need fix need color
+            var date = new Date()
             var tempDate = currentDate.getDate() + (value-44)
-            var ret = String(tempDate)
+            date.setDate(tempDate);
+            // console.log(date)
+            var ret = format(date,3)
         }
         
         return `${ret}`;
     }
+
     const handleTypeChange = (event: React.MouseEvent<HTMLElement>, newRangeType: string,) => {
         setRangeType(newRangeType);
         if (newRangeType === "1") {
@@ -132,7 +159,7 @@ export default function TimeSlider() {
     return (
         <SliderContainer>
             <Card>
-                <CardContent>
+                <CustomCardContent>
                     <ToggleButtonGroup
                         color="primary"
                         value={rangeType}
@@ -149,7 +176,7 @@ export default function TimeSlider() {
                     {/* <Typography id="range-slider">
                         {rangeTypography(range)}
                     </Typography> */}
-                    <Slider
+                    <CustomSlider
                         getAriaLabel={() => 'range'}
                         getAriaValueText={valuetext}
                         value={range}
@@ -161,7 +188,7 @@ export default function TimeSlider() {
                         onChange={handleRangeChange}
                         onChangeCommitted={() => handleRangeCommit(range)}
                     />
-                </CardContent>
+                </CustomCardContent>
 
             </Card>
         </SliderContainer>
@@ -176,3 +203,16 @@ const SliderContainer = styled.div`
     width:30%;
     margin-left:40%;
 `;
+
+const CustomSlider = muiStyle(Slider)({
+    '& .MuiSlider-track': {
+        background: "#3218E7"
+    },
+    '& .MuiSlider-rail': {
+        backgroundImage: "linear-gradient(to right, #18CDE7,#1866E7);"
+    },
+});
+
+const CustomCardContent = muiStyle(CardContent)({
+    padding:'25px'
+});
