@@ -9,65 +9,93 @@ import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import { changeStartTime, changeEndTime } from '../actions';
 
-const dates = (firstDraft: number , secondDraft: number ) => {
-    const firstDate = new Date();
-    const secondDate = new Date();
-    firstDate.setHours(0);
-    firstDate.setMinutes(0);
-    firstDate.setSeconds(0);
-    firstDate.setMilliseconds(0);
-    secondDate.setHours(23);
-    secondDate.setMinutes(59);
-    secondDate.setSeconds(59);
-    secondDate.setMilliseconds(999);
-    firstDate.setDate(firstDate.getDate() + (firstDraft - 180));
-    secondDate.setDate(secondDate.getDate() + (secondDraft - 180));
-    return [firstDate, secondDate];
-};
 
 function valueLabelFormat (value: number) {
-    const newValue = value - 180;
-    if (newValue === 0) {
-        return 'Today';
-    }
+    const newValue = value ;
+    // if (newValue === 0) {
+    //     return 'Today';
+    // }
     return `${newValue}`;
 }
 
 function valuetext (value: number) {
-    const ret = value + 10;
+    const ret = value;
     return `${ret}`;
 }
 
-function rangeTypography (value:number[]) {
-    if (JSON.stringify(value) !== JSON.stringify([0, 180])) {
-        const [firstDraft, secondDraft] = value;
-        const [firstDate, secondDate] = dates(firstDraft, secondDraft);
-        return `${firstDate.toLocaleString()} - ${secondDate.toLocaleString()}`;
-    }
-    return 'Data for the last six months';
-}
+// function rangeTypography (value:number[]) {
+//     if (JSON.stringify(value) !== JSON.stringify([0, 180])) {
+//         const [firstDraft, secondDraft] = value;
+//         const [firstDate, secondDate] = dates(firstDraft, secondDraft);
+//         return `${firstDate.toLocaleString()} - ${secondDate.toLocaleString()}`;
+//     }
+//     return 'Data for the last six months';
+// }
 
 export default function TimeSlider() {
     const dispatch = useDispatch();
     const [rangeType, setRangeType] = useState('');
-    const [range, setRange] = useState([0, 180]);
-    // const [minRange, setMinRange] = useState(1);
-    // const [maxRange, setMaxRange] = useState(31);
+    const [range, setRange] = useState([0, 0]);
+    const [minRange, setMinRange] = useState(1);
+    const [maxRange, setMaxRange] = useState(31);
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    const dates = (firstDraft: number , secondDraft: number ) => {
+        const firstDate = new Date();
+        const secondDate = new Date();
+        firstDate.setHours(0);
+        firstDate.setMinutes(0);
+        firstDate.setSeconds(0);
+        firstDate.setMilliseconds(0);
+        secondDate.setHours(23);
+        secondDate.setMinutes(59);
+        secondDate.setSeconds(59);
+        secondDate.setMilliseconds(999);
+        if (maxRange === currentYear) {
+            firstDate.setFullYear(firstDraft);
+            secondDate.setFullYear(secondDraft);
+        }
+        if (maxRange === 12) {
+            var tempFirst = currentMonth - (12 - firstDraft) 
+            var tempSecond = currentMonth - (12 - secondDraft) 
+            if (tempFirst >= 0 && tempSecond>=0 ) {
+                firstDate.setMonth(currentMonth - (12 - firstDraft) );
+                secondDate.setMonth(currentMonth - (12 - secondDraft) );
+            } else if (tempFirst <0 && tempSecond >=0 ){
+                firstDate.setMonth(currentMonth + firstDraft);
+                firstDate.setFullYear(currentYear - 1);
+                secondDate.setMonth(currentMonth - (12 - secondDraft) );
+            } else if (tempSecond < 0 && tempFirst >=0) {
+                secondDate.setMonth(currentMonth + secondDraft);
+                secondDate.setFullYear(currentYear - 1);
+                firstDate.setMonth(currentMonth - (12 - firstDraft) );
+            } else {
+                firstDate.setMonth(currentMonth + firstDraft);
+                firstDate.setFullYear(currentYear - 1);
+                secondDate.setMonth(currentMonth + secondDraft);
+                secondDate.setFullYear(currentYear - 1);
+            }
+        }
+        if (maxRange === 44) {
+            firstDate.setDate(firstDate.getDate() + (firstDraft - 44));
+            secondDate.setDate(secondDate.getDate() + (secondDraft - 44));
+        }
+        return [firstDate, secondDate];
+    };
 
     const handleTypeChange = (event: React.MouseEvent<HTMLElement>, newRangeType: string,) => {
         setRangeType(newRangeType);
-
         if (newRangeType === "1") {
-            setRange([150, 180]);
-            handleRangeCommit([150, 180]);
+            setMinRange(currentYear-100)
+            setMaxRange(currentYear)
         }
         if (newRangeType === "2") {
-            setRange([120, 180]);
-            handleRangeCommit([120, 180]);
+            setMinRange(1)
+            setMaxRange(12)
         }
         if (newRangeType === "3") {
-            setRange([90, 180]);
-            handleRangeCommit([90, 180]);
+            setMinRange(13)
+            setMaxRange(44)
         }
         
     };
@@ -97,22 +125,22 @@ export default function TimeSlider() {
                         size="small"
                         sx={{ marginBottom: 2 }}
                     >
-                        <ToggleButton value="1"><b>1 Month</b></ToggleButton>
-                        <ToggleButton value="2"><b>2 Month</b></ToggleButton>
-                        <ToggleButton value="3"><b>3 Month</b></ToggleButton>
+                        <ToggleButton value="1"><b>Year</b></ToggleButton>
+                        <ToggleButton value="2"><b>Month</b></ToggleButton>
+                        <ToggleButton value="3"><b>Date</b></ToggleButton>
                     </ToggleButtonGroup>
-                    <Typography id="range-slider">
+                    {/* <Typography id="range-slider">
                         {rangeTypography(range)}
-                    </Typography>
+                    </Typography> */}
                     <Slider
                         getAriaLabel={() => 'range'}
-                        value={range}
                         getAriaValueText={valuetext}
+                        value={range}
                         valueLabelDisplay="auto"
                         valueLabelFormat={valueLabelFormat}
                         marks
-                        min={0}
-                        max={180}
+                        min={minRange}
+                        max={maxRange}
                         onChange={handleRangeChange}
                         onChangeCommitted={() => handleRangeCommit(range)}
                     />
