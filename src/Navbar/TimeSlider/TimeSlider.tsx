@@ -10,14 +10,6 @@ import Typography from '@mui/material/Typography';
 import { changeStartTime, changeEndTime } from '../actions';
 
 
-function valueLabelFormat (value: number) {
-    const newValue = value ;
-    // if (newValue === 0) {
-    //     return 'Today';
-    // }
-    return `${newValue}`;
-}
-
 function valuetext (value: number) {
     const ret = value;
     return `${ret}`;
@@ -40,6 +32,7 @@ export default function TimeSlider() {
     const [maxRange, setMaxRange] = useState(31);
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
+    const currentDate = new Date();
     const dates = (firstDraft: number , secondDraft: number ) => {
         const firstDate = new Date();
         const secondDate = new Date();
@@ -54,8 +47,7 @@ export default function TimeSlider() {
         if (maxRange === currentYear) {
             firstDate.setFullYear(firstDraft);
             secondDate.setFullYear(secondDraft);
-        }
-        if (maxRange === 12) {
+        } else if (maxRange === 12) {
             var tempFirst = currentMonth - (12 - firstDraft) 
             var tempSecond = currentMonth - (12 - secondDraft) 
             if (tempFirst >= 0 && tempSecond>=0 ) {
@@ -75,14 +67,39 @@ export default function TimeSlider() {
                 secondDate.setMonth(currentMonth + secondDraft);
                 secondDate.setFullYear(currentYear - 1);
             }
-        }
-        if (maxRange === 44) {
+        } else if (maxRange === 44) {
             firstDate.setDate(firstDate.getDate() + (firstDraft - 44));
             secondDate.setDate(secondDate.getDate() + (secondDraft - 44));
         }
         return [firstDate, secondDate];
     };
 
+
+    function valueLabelFormat (value: number) {
+        const newValue = value ;
+        if (newValue === 2022 || newValue ===12 || newValue === 44) {
+            return 'Today';
+        }
+
+        if (maxRange === currentYear) {
+            var ret = String(value);
+        } else if (maxRange === 12) {
+            const month = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sept", "Oct", "Nov", "Dec" ];
+            var tempMonth = currentMonth - (12 - value) 
+            if (tempMonth < 0 ) {
+                var ret = month[(currentMonth + value)]
+            } else {
+                var ret = month[(tempMonth)]
+            }
+        } else {
+            //todo:need fix need color
+            var tempDate = currentDate.getDate() + (value-44)
+            var ret = String(tempDate)
+        }
+        
+        return `${ret}`;
+    }
     const handleTypeChange = (event: React.MouseEvent<HTMLElement>, newRangeType: string,) => {
         setRangeType(newRangeType);
         if (newRangeType === "1") {
