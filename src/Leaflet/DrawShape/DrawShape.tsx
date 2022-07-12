@@ -19,17 +19,17 @@ export default function FocusMarker() {
             
               if (type === 'circle') {
             
-                var lat = Math.round(layer.getLatLng().lat).toFixed(2);
-                var lng = Math.round(layer.getLatLng().lng).toFixed(2);
-                var radius = Math.round(layer.getRadius()/1000).toFixed(2);
+                var lat = layer.getLatLng().lat
+                var lng = layer.getLatLng().lng
+                var radius = layer.getRadius()/1000
                 dispatch(changeSearchCircle(Number(lng), Number(lat), Number(radius)));
               }
               if (type==='rectangle'){
                 var coordinates = layer.getLatLngs();
-                var minlon = Math.round(coordinates[0][0].lng).toFixed(2);
-                var minlat = Math.round(coordinates[0][0].lat).toFixed(2);
-                var maxlon = Math.round(coordinates[0][2].lng).toFixed(2);
-                var maxlat = Math.round(coordinates[0][2].lat).toFixed(2);
+                var minlon = coordinates[0][0].lng
+                var minlat = coordinates[0][0].lat
+                var maxlon = coordinates[0][2].lng
+                var maxlat = coordinates[0][2].lat
                 dispatch(changeSearchRectangle(Number(minlon), Number(minlat), Number(maxlon), Number(maxlat)));
               }
         })
@@ -39,17 +39,17 @@ export default function FocusMarker() {
           var layers = e.layers;
           layers.eachLayer(function (layer: { getLatLng: () => { (): any; new(): any; lat: number; lng: number; }; getRadius: () => number; getLatLngs: () => any; }) {
           if (layer instanceof L.Circle) {
-            var lat = Math.round(layer.getLatLng().lat).toFixed(2);
-            var lng = Math.round(layer.getLatLng().lng).toFixed(2);
-            var radius = Math.round(layer.getRadius()/1000).toFixed(2);
+            var lat = layer.getLatLng().lat
+            var lng = layer.getLatLng().lng
+            var radius = layer.getRadius()/1000
             dispatch(changeSearchCircle(Number(lng), Number(lat), Number(radius)));
           }
           if (layer instanceof L.Rectangle) {
             var coordinates = layer.getLatLngs();
-            var minlon = Math.round(coordinates[0][0].lng).toFixed(2);
-            var minlat = Math.round(coordinates[0][0].lat).toFixed(2);
-            var maxlon = Math.round(coordinates[0][2].lng).toFixed(2);
-            var maxlat = Math.round(coordinates[0][2].lat).toFixed(2);
+            var minlon = coordinates[0][0].lng
+            var minlat = coordinates[0][0].lat
+            var maxlon = coordinates[0][2].lng
+            var maxlat = coordinates[0][2].lat
             dispatch(changeSearchRectangle(Number(minlon), Number(minlat), Number(maxlon), Number(maxlat)));
           }
         });

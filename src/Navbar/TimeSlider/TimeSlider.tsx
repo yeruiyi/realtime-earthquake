@@ -46,10 +46,10 @@ function format(inputDate: Date,inputType: number) {
 
 export default function TimeSlider() {
     const dispatch = useDispatch();
-    const [rangeType, setRangeType] = useState('');
-    const [range, setRange] = useState([0, 0]);
-    const [minRange, setMinRange] = useState(0);
-    const [maxRange, setMaxRange] = useState(0);
+    const [rangeType, setRangeType] = useState('3');
+    const [range, setRange] = useState([44,44]);
+    const [minRange, setMinRange] = useState(13);
+    const [maxRange, setMaxRange] = useState(44);
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const currentDate = new Date();
@@ -132,14 +132,17 @@ export default function TimeSlider() {
         if (newRangeType === "1") {
             setMinRange(currentYear-100)
             setMaxRange(currentYear)
+            setRange([currentYear,currentYear])
         }
         if (newRangeType === "2") {
             setMinRange(1)
             setMaxRange(12)
+            setRange([12,12])
         }
         if (newRangeType === "3") {
             setMinRange(13)
             setMaxRange(44)
+            setRange([44,44])
         }
         
     };
