@@ -6,6 +6,7 @@ import Leaflet from './Leaflet';
 import NavBar from './Navbar';
 import store from './store';
 import TimeSlider from './Navbar/TimeSlider';
+import AutoPlay from './Leaflet/AutoPlay';
 export default function App() {
   return (
     <>
@@ -14,6 +15,7 @@ export default function App() {
         <NavBar />
         <Leaflet />
         <TimeSlider/>
+        <AutoPlay/>
       </Provider>
     </>
   );
