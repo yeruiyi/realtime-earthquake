@@ -212,7 +212,7 @@ const CustomSlider = muiStyle(Slider)({
         background: "#3218E7"
     },
     '& .MuiSlider-rail': {
-        backgroundImage: "linear-gradient(to right, #18CDE7,#1866E7);"
+        backgroundImage: "linear-gradient(to right, #18CDE7,#00008B);"
     },
 });
 

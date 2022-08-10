@@ -7,5 +7,6 @@ export default {
   searchcircleChanged: `${prefix}/searchcircleChanged`,
   mapFocusChanged:`${prefix}/mapFocusChanged`,
   orderByChanged:`${prefix}/orderByChanged`,
-  searchRectangleChanged:`${prefix}/searchRectangleChanged`
+  searchRectangleChanged:`${prefix}/searchRectangleChanged`,
+  autoPlayTypeChanged:`${prefix}/autoPlayTypeChanged`
 };

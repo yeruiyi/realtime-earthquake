@@ -1,4 +1,5 @@
 import { useState,useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -11,14 +12,17 @@ import styled from 'styled-components';
 import Popper from '@mui/material/Popper';
 import Grow from '@mui/material/Grow';
 import { styled as muiStyle } from '@mui/material/styles';
+import { autoPlayTypeChanged } from '../../Navbar/actions';
 
-const options = [' 0.5', ' 1', ' 1.5'];
+const options = ['time', 'magnitude'];
 export default function AutoPlay() {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(1);
 
   const handleClick = () => {
+    dispatch(autoPlayTypeChanged(true,options[selectedIndex]));
     console.info(`You clicked ${options[selectedIndex]}`);
   };
 
@@ -49,7 +53,7 @@ export default function AutoPlay() {
   return(
     <DropdownContainer>
       <CustomButtonGroup variant="contained"  aria-label="outlined primary button group">
-        <Button onClick={handleClick}>AutoPlay{options[selectedIndex]}</Button>
+        <Button onClick={handleClick}>AutoPlay By {options[selectedIndex]}</Button>
         <Button
             size="small"
             aria-controls={open ? 'split-button-menu' : undefined}

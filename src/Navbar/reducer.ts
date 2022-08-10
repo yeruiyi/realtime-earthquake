@@ -16,6 +16,8 @@ interface IEarthquakesReducer {
   minlatitude: number | null; 
   maxlongitude: number | null; 
   maxlatitude: number | null;
+  autoplayEnabled: boolean;
+  autoplayType: string;
 }
 
 const initialState: IEarthquakesReducer = {
@@ -33,7 +35,8 @@ const initialState: IEarthquakesReducer = {
   minlatitude: null, 
   maxlongitude: null,  
   maxlatitude: null, 
-
+  autoplayEnabled: false,
+  autoplayType: '',
 };
 
 // eslint-disable-next-line default-param-last
@@ -81,6 +84,12 @@ export default (state = initialState, action: IAction) => {
       return {
         ...state,
         orderby: action.payload.orderby,
+      };
+    case types.autoPlayTypeChanged:
+      return {
+        ...state,
+        autoplayEnabled: action.payload.autoplayEnabled,
+        autoplayType: action.payload.autoplayType,
       };
     default:
       return state;

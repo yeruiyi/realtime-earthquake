@@ -56,6 +56,12 @@ const changeOrderBy = (orderby: string): IAction => ({
   }
 });
 
+const autoPlayTypeChanged = (autoplayEnabled: boolean,autoplayType: string): IAction => ({
+  type: types.autoPlayTypeChanged,
+  payload: {
+    autoplayEnabled,
+    autoplayType
+  }
+});
 
-
-export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus, changeOrderBy, changeSearchRectangle  };
+export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus, changeOrderBy, changeSearchRectangle, autoPlayTypeChanged  };
