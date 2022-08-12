@@ -26,11 +26,12 @@ export default function Earthquakes() {
   }
 
   let marker: L.Layer;
-  function autoPlayMarker (index: LatLng ){
+  function autoPlayMarker (index: LatLng){
     if (marker) {
       map.removeLayer(marker)
     }
     marker = new L.Marker(index).addTo(map)
+    return marker
   }
   
   if (map && geojson) {
@@ -44,10 +45,17 @@ export default function Earthquakes() {
           timeArray.push(time)
           timeHash.set(time,latlng)
         })
-    
+        //CHANGE SORT TO ASC , CHANGE ADD MARKER TO EDIT LAYOUT 
         const sort = timeArray.sort((a, b) => a-b)
         for (let _i = 0; _i < sort.length; _i++) {
-          setTimeout(() =>autoPlayMarker(timeHash.get(sort[_i])),_i*2000)
+          (async () => {
+            var result = await new Promise(resolve => setTimeout(resolve, _i*2000)).then(() => autoPlayMarker(timeHash.get(sort[_i])))
+            if  (_i == sort.length-1) {
+              result = await new Promise(resolve => setTimeout(resolve, 2000))
+              marker = autoPlayMarker(timeHash.get(sort[_i]))
+              map.removeLayer(marker)
+            }
+          })()
         }
       }
       
@@ -63,11 +71,19 @@ export default function Earthquakes() {
     
         const sort = magArray.sort((a, b) => a-b)
         for (let _i = 0; _i < sort.length; _i++) {
-          setTimeout(() =>autoPlayMarker(magHash.get(sort[_i])),_i*2000)
+          (async () => {
+            var result = await new Promise(resolve => setTimeout(resolve, _i*2000)).then(() => autoPlayMarker(magHash.get(sort[_i])))
+            if  (_i == sort.length-1) {
+              result = await new Promise(resolve => setTimeout(resolve, 2000))
+              marker = autoPlayMarker(magHash.get(sort[_i]))
+              map.removeLayer(marker)
+            }
+          })()
         }
       }
     }
   }
+
   useEffect(() => {
     if (map && geojson && map.hasLayer(geojson)) map.removeLayer(geojson);
 
