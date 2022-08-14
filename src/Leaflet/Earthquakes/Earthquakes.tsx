@@ -2,19 +2,25 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import L, { LatLng, GeoJSON, latLng } from 'leaflet';
 import { useMap } from 'react-leaflet';
-
+import { useDispatch } from 'react-redux';
 import Spinner from '../../Spinner';
 import useEarthquakesFetcher from './hooks';
 import { RooState } from '../../store';
 import { onEachFeature } from './utils';
 import { geojsonMarkerOptions } from '../utils';
 import { FeatureProps } from './models';
+import { autoPlayTypeChanged } from '../../Navbar/actions';
 
 let geojson: GeoJSON;
-
+//to-do change marker image to gif circle
+var markerIcon = L.icon({
+  iconUrl: require('../images/red-circle-marker-gif.gif'),
+  iconSize: [60, 60]
+})
 export default function Earthquakes() {
   const { startTime, endTime, longitude, latitude, maxradius, orderby, focusLat, focusLon, minlongitude, minlatitude, maxlongitude, maxlatitude, autoplayEnabled, autoplayType } = useSelector(({ navbar }: RooState) => navbar);
   const [earthquakes, loading] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude);
+  const dispatch = useDispatch();
 
   const map = useMap();
 
@@ -30,7 +36,7 @@ export default function Earthquakes() {
     if (marker) {
       map.removeLayer(marker)
     }
-    marker = new L.Marker(index).addTo(map)
+    marker = new L.Marker(index,{icon: markerIcon}).addTo(map)
     return marker
   }
   
@@ -45,7 +51,6 @@ export default function Earthquakes() {
           timeArray.push(time)
           timeHash.set(time,latlng)
         })
-        //CHANGE SORT TO ASC , CHANGE ADD MARKER TO EDIT LAYOUT 
         const sort = timeArray.sort((a, b) => a-b)
         for (let _i = 0; _i < sort.length; _i++) {
           (async () => {
@@ -54,6 +59,7 @@ export default function Earthquakes() {
               result = await new Promise(resolve => setTimeout(resolve, 2000))
               marker = autoPlayMarker(timeHash.get(sort[_i]))
               map.removeLayer(marker)
+              dispatch(autoPlayTypeChanged(false,''));
             }
           })()
         }
@@ -77,6 +83,7 @@ export default function Earthquakes() {
               result = await new Promise(resolve => setTimeout(resolve, 2000))
               marker = autoPlayMarker(magHash.get(sort[_i]))
               map.removeLayer(marker)
+              dispatch(autoPlayTypeChanged(false,''));
             }
           })()
         }
