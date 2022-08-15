@@ -108,7 +108,7 @@ const DropdownContainer = styled.div`
     bottom: 130px;
     z-index: 314159;
     margin:auto;
-    width:30%;
+    width:20%;
     margin-left:25%;
 `;
 

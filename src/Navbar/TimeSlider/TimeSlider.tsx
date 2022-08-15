@@ -204,7 +204,7 @@ const SliderContainer = styled.div`
     z-index: 314159;
     margin:auto;
     width:30%;
-    margin-left:40%;
+    margin-left:45%;
 `;
 
 const CustomSlider = muiStyle(Slider)({

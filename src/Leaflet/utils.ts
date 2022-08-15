@@ -15,7 +15,7 @@ const circleMarkerColor = (magnitude: number): string => {
 
 const geojsonMarkerOptions = (magnitude: number): Object => {
   return {
-    radius: 2.5 * magnitude,
+    radius: 3 * magnitude,
     fillColor: circleMarkerColor(magnitude),
     color: 'grey',
     weight: 0.5,
