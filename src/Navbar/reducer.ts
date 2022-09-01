@@ -18,6 +18,7 @@ interface IEarthquakesReducer {
   maxlatitude: number | null;
   autoplayEnabled: boolean;
   autoplayType: string;
+  difference: number;
 }
 
 const initialState: IEarthquakesReducer = {
@@ -37,6 +38,7 @@ const initialState: IEarthquakesReducer = {
   maxlatitude: null, 
   autoplayEnabled: false,
   autoplayType: '',
+  difference:0,
 };
 
 // eslint-disable-next-line default-param-last
@@ -90,6 +92,11 @@ export default (state = initialState, action: IAction) => {
         ...state,
         autoplayEnabled: action.payload.autoplayEnabled,
         autoplayType: action.payload.autoplayType,
+      };
+    case types.timeDifferenceChanged:
+      return {
+        ...state,
+        difference: action.payload.difference,
       };
     default:
       return state;

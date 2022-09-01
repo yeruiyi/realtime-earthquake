@@ -8,5 +8,6 @@ export default {
   mapFocusChanged:`${prefix}/mapFocusChanged`,
   orderByChanged:`${prefix}/orderByChanged`,
   searchRectangleChanged:`${prefix}/searchRectangleChanged`,
-  autoPlayTypeChanged:`${prefix}/autoPlayTypeChanged`
+  autoPlayTypeChanged:`${prefix}/autoPlayTypeChanged`,
+  timeDifferenceChanged:`${prefix}/timeDifferenceChanged`
 };

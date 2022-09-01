@@ -7,7 +7,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
-import { changeStartTime, changeEndTime } from '../actions';
+import { changeStartTime, changeEndTime,changeOrderBy,changeTimeDifference } from '../actions';
 import { styled as muiStyle } from '@mui/material/styles';
 
 function valuetext (value: number) {
@@ -155,8 +155,13 @@ export default function TimeSlider() {
     const handleRangeCommit = (newRange: number | number[]) => {
         const [firstDraft, secondDraft] = newRange as number[]
         const [firstDate, secondDate] = dates(firstDraft, secondDraft);
+        const first = new Date(firstDate.toISOString())
+        const second = new Date(secondDate.toISOString())
+        const timeDifference = second.getTime() - first.getTime()
         dispatch(changeStartTime(firstDate.toISOString()));
         dispatch(changeEndTime(secondDate.toISOString()));
+        dispatch(changeOrderBy("time-asc"))
+        dispatch(changeTimeDifference(timeDifference))
     }
     
     return (

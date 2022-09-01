@@ -20,8 +20,23 @@ const geojsonMarkerOptions = (magnitude: number): Object => {
     color: 'grey',
     weight: 0.5,
     opacity: 1,
-    fillOpacity: 0.8
+    fillOpacity: 1
   };
 };
 
-export { circleMarkerColor, geojsonMarkerOptions };
+const geojsonMarkerAutoplay = (magnitude: number): Object => {
+  return {
+    radius: 3 * magnitude,
+    fillColor: circleMarkerColor(magnitude),
+    color: 'grey',
+    weight: 0.5,
+    opacity: 0,
+    fillOpacity: 0
+  };
+};
+
+
+
+
+
+export { circleMarkerColor, geojsonMarkerOptions, geojsonMarkerAutoplay };

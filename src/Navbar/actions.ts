@@ -64,4 +64,11 @@ const autoPlayTypeChanged = (autoplayEnabled: boolean,autoplayType: string): IAc
   }
 });
 
-export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus, changeOrderBy, changeSearchRectangle, autoPlayTypeChanged  };
+const changeTimeDifference = (difference:number): IAction => ({
+  type: types.timeDifferenceChanged,
+  payload: {
+    difference,
+  }
+});
+
+export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus, changeOrderBy, changeSearchRectangle, autoPlayTypeChanged, changeTimeDifference  };
