@@ -15,6 +15,25 @@ function valuetext (value: number) {
     return `${ret}`;
 }
 
+const displayTypography = (firstDraft: number , secondDraft: number , type:number ) => {
+    var differenceText = secondDraft - firstDraft
+    if ( type == 3 ) {
+        return `Data for last ${differenceText} days`
+    } else if ( type == 2 ) {
+        if(differenceText == 0 ) {
+            return `Data for current months`
+        } else {
+            return `Data for last ${differenceText} months`
+        }
+    } else if (type == 1 ) {
+        if(differenceText == 0 ) {
+            return `Data for current year`
+        } else {
+            return `Data for last ${differenceText} year`
+        }
+    }
+};
+
 function format(inputDate: Date,inputType: number) {
     let date,month;
 
@@ -35,14 +54,15 @@ function format(inputDate: Date,inputType: number) {
         return `${date}/${month}`;
     }
 }
-// function rangeTypography (value:number[]) {
-//     if (JSON.stringify(value) !== JSON.stringify([0, 180])) {
-//         const [firstDraft, secondDraft] = value;
-//         const [firstDate, secondDate] = dates(firstDraft, secondDraft);
-//         return `${firstDate.toLocaleString()} - ${secondDate.toLocaleString()}`;
-//     }
-//     return 'Data for the last six months';
-// }
+
+function rangeTypography (value:number[], type: string) {
+    if (JSON.stringify(value) !== JSON.stringify([44, 44])) {
+        const [firstDraft, secondDraft] = value;
+        const displayText = displayTypography(firstDraft, secondDraft, parseInt(type));
+        return displayText;
+    }
+    return 'Data for the today';
+}
 
 export default function TimeSlider() {
     const dispatch = useDispatch();
@@ -116,11 +136,9 @@ export default function TimeSlider() {
                 var ret = `${retMonth}/${currentYear}`
             }
         } else {
-            //todo:need fix need color
             var date = new Date()
             var tempDate = currentDate.getDate() + (value-44)
             date.setDate(tempDate);
-            // console.log(date)
             var ret = format(date,3)
         }
         
@@ -181,9 +199,6 @@ export default function TimeSlider() {
                         <ToggleButton value="2"><b>Month</b></ToggleButton>
                         <ToggleButton value="3"><b>Date</b></ToggleButton>
                     </ToggleButtonGroup>
-                    {/* <Typography id="range-slider">
-                        {rangeTypography(range)}
-                    </Typography> */}
                     <CustomSlider
                         getAriaLabel={() => 'range'}
                         getAriaValueText={valuetext}
@@ -196,6 +211,9 @@ export default function TimeSlider() {
                         onChange={handleRangeChange}
                         onChangeCommitted={() => handleRangeCommit(range)}
                     />
+                    <Typography id="range-slider" align="center">
+                        {rangeTypography(range,rangeType)}
+                    </Typography>
                 </CustomCardContent>
 
             </Card>
