@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import L from 'leaflet';
 import { changeSearchCircle,changeSearchRectangle } from '../../Navbar/actions';
-export default function FocusMarker() {
+export default function DrawShape() {
     const dispatch = useDispatch();
 
     const map = useMap();

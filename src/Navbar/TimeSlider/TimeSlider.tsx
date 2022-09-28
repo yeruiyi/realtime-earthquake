@@ -7,8 +7,11 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
-import { changeStartTime, changeEndTime,changeOrderBy,changeTimeDifference } from '../actions';
+import { changeStartTime, changeEndTime,changeOrderBy,changeTimeDifference,changeClusterEnabled } from '../actions';
 import { styled as muiStyle } from '@mui/material/styles';
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 function valuetext (value: number) {
     const ret = value;
@@ -66,6 +69,7 @@ function rangeTypography (value:number[], type: string) {
 
 export default function TimeSlider() {
     const dispatch = useDispatch();
+    const [clusterChecked, setClusterChecked] = useState(false);
     const [rangeType, setRangeType] = useState('3');
     const [range, setRange] = useState([44,44]);
     const [minRange, setMinRange] = useState(13);
@@ -181,11 +185,30 @@ export default function TimeSlider() {
         dispatch(changeOrderBy("time-asc"))
         dispatch(changeTimeDifference(timeDifference))
     }
+
+    const handleClusterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setClusterChecked(event.target.checked);
+        if (event.target.checked) {
+            dispatch(changeClusterEnabled(true))
+        } else if (!event.target.checked) {
+            dispatch(changeClusterEnabled(false))
+        }
+    };
+    
     
     return (
         <SliderContainer>
             <Card>
                 <CustomCardContent>
+                    <FormGroup>
+                        <FormControlLabel control={ 
+                            <Switch
+                                checked={clusterChecked}
+                                onChange={handleClusterChange}
+                                inputProps={{ 'aria-label': 'controlled' }}
+                            />} 
+                        label="Cluster View" />
+                    </FormGroup>
                     <ToggleButtonGroup
                         color="primary"
                         value={rangeType}

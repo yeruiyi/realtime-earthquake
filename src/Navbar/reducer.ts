@@ -19,6 +19,8 @@ interface IEarthquakesReducer {
   autoplayEnabled: boolean;
   autoplayType: string;
   difference: number;
+  countEnabled: boolean;
+  clusterEnabled:boolean;
 }
 
 const initialState: IEarthquakesReducer = {
@@ -39,6 +41,8 @@ const initialState: IEarthquakesReducer = {
   autoplayEnabled: false,
   autoplayType: '',
   difference:0,
+  countEnabled: true,
+  clusterEnabled:false,
 };
 
 // eslint-disable-next-line default-param-last
@@ -97,6 +101,16 @@ export default (state = initialState, action: IAction) => {
       return {
         ...state,
         difference: action.payload.difference,
+      };
+    case types.countEnabledChanged:
+      return {
+        ...state,
+        countEnabled: action.payload.countEnabled,
+      };
+    case types.clusterEnabledChanged:
+      return {
+        ...state,
+        clusterEnabled: action.payload.clusterEnabled,
       };
     default:
       return state;

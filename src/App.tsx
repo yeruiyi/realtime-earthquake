@@ -7,6 +7,7 @@ import NavBar from './Navbar';
 import store from './store';
 import TimeSlider from './Navbar/TimeSlider';
 import AutoPlay from './Leaflet/AutoPlay';
+import CountButton from './Navbar/CountButton';
 export default function App() {
   return (
     <>
@@ -16,6 +17,7 @@ export default function App() {
         <Leaflet />
         <TimeSlider/>
         <AutoPlay/>
+        <CountButton/>
       </Provider>
     </>
   );

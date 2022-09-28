@@ -71,4 +71,18 @@ const changeTimeDifference = (difference:number): IAction => ({
   }
 });
 
-export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus, changeOrderBy, changeSearchRectangle, autoPlayTypeChanged, changeTimeDifference  };
+const changeCountEnabled = (countEnabled:boolean): IAction => ({
+  type: types.countEnabledChanged,
+  payload: {
+    countEnabled,
+  }
+});
+
+const changeClusterEnabled = (clusterEnabled:boolean): IAction => ({
+  type: types.clusterEnabledChanged,
+  payload: {
+    clusterEnabled,
+  }
+});
+
+export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus, changeOrderBy, changeSearchRectangle, autoPlayTypeChanged, changeTimeDifference, changeCountEnabled, changeClusterEnabled  };

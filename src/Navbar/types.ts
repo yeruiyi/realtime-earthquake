@@ -9,5 +9,7 @@ export default {
   orderByChanged:`${prefix}/orderByChanged`,
   searchRectangleChanged:`${prefix}/searchRectangleChanged`,
   autoPlayTypeChanged:`${prefix}/autoPlayTypeChanged`,
-  timeDifferenceChanged:`${prefix}/timeDifferenceChanged`
+  timeDifferenceChanged:`${prefix}/timeDifferenceChanged`,
+  countEnabledChanged:`${prefix}/countEnabledChanged`,
+  clusterEnabledChanged:`${prefix}/clusterEnabledChanged`
 };
