@@ -28,8 +28,7 @@ export default function Cluster() {
           data.push(feature.geometry.coordinates)
           return L.marker(latlng);
         }
-      });
-    console.log(data)
+    });
 
     if (!loading && clusterEnabled){
         return (

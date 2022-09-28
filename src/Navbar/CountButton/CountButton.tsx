@@ -27,9 +27,8 @@ export default function CountButton() {
 
 const HeatmapContainer = styled.div`
     position: absolute;
-    bottom: 500px;
     z-index: 314159;
     margin:auto;
-    width:20%;
+    width:5%;
     right: 0;
 `;

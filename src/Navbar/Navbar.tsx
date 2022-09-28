@@ -14,7 +14,6 @@ export default function NavBar() {
   return (
     <Sidebar>
       <NavContainer>
-        <Header>Earthquake</Header>
         <DropdownList/>
         <NavBarForm/>
         <TextData/>
@@ -24,19 +23,15 @@ export default function NavBar() {
 }
 
 const Sidebar = styled.div`
-  height: 100vh;
-  width: 20%;
-  float: left;
-  overflow: auto;
   background-color:#232C33;
 `;
 
-const Header = styled.div`
-  color:#ffffff;
-  font-size: 2em;
-  margin-bottom: 50px;
-  margin-top: 30px;
-`;
+// const Header = styled.div`
+//   color:#ffffff;
+//   font-size: 2em;
+//   margin-bottom: 50px;
+//   margin-top: 30px;
+// `;
 
 const NavContainer = styled.div`
   margin-left: 20px;
