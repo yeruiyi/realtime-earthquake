@@ -17,8 +17,8 @@ const customIcon = new L.Icon({
 
 let geojson: GeoJSON;
 export default function Cluster() {
-    const { startTime, endTime, longitude, latitude, maxradius, orderby, focusLat, focusLon, minlongitude, minlatitude, maxlongitude, maxlatitude, autoplayEnabled, difference, countEnabled,clusterEnabled } = useSelector(({ navbar }: RooState) => navbar);
-    const [earthquakes, loading, eqCount] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled);
+    const { startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled,clusterEnabled,minMag, maxMag } = useSelector(({ navbar }: RooState) => navbar);
+    const [earthquakes, loading, eqCount] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag);
 
 
     let data: any[] = [];

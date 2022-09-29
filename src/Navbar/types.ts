@@ -11,5 +11,6 @@ export default {
   autoPlayTypeChanged:`${prefix}/autoPlayTypeChanged`,
   timeDifferenceChanged:`${prefix}/timeDifferenceChanged`,
   countEnabledChanged:`${prefix}/countEnabledChanged`,
-  clusterEnabledChanged:`${prefix}/clusterEnabledChanged`
+  clusterEnabledChanged:`${prefix}/clusterEnabledChanged`,
+  magRangeChanged:`${prefix}/magRangeChanged`
 };

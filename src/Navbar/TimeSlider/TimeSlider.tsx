@@ -7,11 +7,16 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
-import { changeStartTime, changeEndTime,changeOrderBy,changeTimeDifference,changeClusterEnabled } from '../actions';
+import { changeStartTime, changeEndTime, changeOrderBy, changeTimeDifference, changeClusterEnabled, changeMagRange } from '../actions';
 import { styled as muiStyle } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
 
 function valuetext (value: number) {
     const ret = value;
@@ -58,7 +63,7 @@ function format(inputDate: Date,inputType: number) {
     }
 }
 
-function rangeTypography (value:number[], type: string) {
+function timeTypography (value:number[], type: string) {
     if (JSON.stringify(value) !== JSON.stringify([44, 44])) {
         const [firstDraft, secondDraft] = value;
         const displayText = displayTypography(firstDraft, secondDraft, parseInt(type));
@@ -67,16 +72,28 @@ function rangeTypography (value:number[], type: string) {
     return 'Data for the today';
 }
 
+function magTypography (value:number[]) {
+    const [firstMag, secondMag] = value;
+    const displayText = `Data for magnitude ranged from ${firstMag} to ${secondMag}`
+    return displayText;
+}
+
 export default function TimeSlider() {
     const dispatch = useDispatch();
+    const [tabValue, setTabValue] = useState('1');
     const [clusterChecked, setClusterChecked] = useState(false);
     const [rangeType, setRangeType] = useState('3');
-    const [range, setRange] = useState([44,44]);
-    const [minRange, setMinRange] = useState(13);
-    const [maxRange, setMaxRange] = useState(44);
+    const [timeRange, setTimeRange] = useState([44,44]);
+    const [minTimeRange, setMinTimeRange] = useState(13);
+    const [maxTimeRange, setMaxTimeRange] = useState(44);
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const currentDate = new Date();
+
+    const [magType, setMagType] = useState('3');
+    const [magRange, setMagRange] = useState([7,10]);
+    const [minMagRange, setMinMagRange] = useState(0);
+    const [maxMagRange, setMaxMagRange] = useState(10);
 
     const dates = (firstDraft: number , secondDraft: number ) => {
         const firstDate = new Date();
@@ -89,10 +106,10 @@ export default function TimeSlider() {
         secondDate.setMinutes(59);
         secondDate.setSeconds(59);
         secondDate.setMilliseconds(999);
-        if (maxRange === currentYear) {
+        if (maxTimeRange === currentYear) {
             firstDate.setFullYear(firstDraft);
             secondDate.setFullYear(secondDraft);
-        } else if (maxRange === 12) {
+        } else if (maxTimeRange === 12) {
             var tempFirst = currentMonth - (12 - firstDraft) 
             var tempSecond = currentMonth - (12 - secondDraft) 
             if (tempFirst >= 0 && tempSecond>=0 ) {
@@ -112,7 +129,7 @@ export default function TimeSlider() {
                 secondDate.setMonth(currentMonth + secondDraft);
                 secondDate.setFullYear(currentYear - 1);
             }
-        } else if (maxRange === 44) {
+        } else if (maxTimeRange === 44) {
             firstDate.setDate(firstDate.getDate() + (firstDraft - 44));
             secondDate.setDate(secondDate.getDate() + (secondDraft - 44));
         }
@@ -126,9 +143,9 @@ export default function TimeSlider() {
             return 'Today';
         }
 
-        if (maxRange === currentYear) {
+        if (maxTimeRange === currentYear) {
             var ret = String(value);
-        } else if (maxRange === 12) {
+        } else if (maxTimeRange === 12) {
             const month = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
             "Jul", "Aug", "Sept", "Oct", "Nov", "Dec" ];
             var tempMonth = currentMonth - (12 - value) 
@@ -149,28 +166,28 @@ export default function TimeSlider() {
         return `${ret}`;
     }
 
-    const handleTypeChange = (event: React.MouseEvent<HTMLElement>, newRangeType: string,) => {
+    const handleRangeTypeChange = (event: React.MouseEvent<HTMLElement>, newRangeType: string,) => {
         setRangeType(newRangeType);
         if (newRangeType === "1") {
-            setMinRange(currentYear-100)
-            setMaxRange(currentYear)
-            setRange([currentYear,currentYear])
+            setMinTimeRange(currentYear-100)
+            setMaxTimeRange(currentYear)
+            setTimeRange([currentYear,currentYear])
         }
         if (newRangeType === "2") {
-            setMinRange(1)
-            setMaxRange(12)
-            setRange([12,12])
+            setMinTimeRange(1)
+            setMaxTimeRange(12)
+            setTimeRange([12,12])
         }
         if (newRangeType === "3") {
-            setMinRange(13)
-            setMaxRange(44)
-            setRange([44,44])
+            setMinTimeRange(13)
+            setMaxTimeRange(44)
+            setTimeRange([44,44])
         }
         
     };
 
     const handleRangeChange = (event: Event, newRange: number | number[]) => {
-        setRange(newRange as number[]);
+        setTimeRange(newRange as number[]);
     };
 
  
@@ -195,11 +212,108 @@ export default function TimeSlider() {
         }
     };
     
-    
+    const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+        setTabValue(newValue);
+    };
+
+    const handleMagTypeChange = (event: React.MouseEvent<HTMLElement>, newMagType: string,) => {
+        setMagType(newMagType);
+        var newMagRange : number[];
+        if (newMagType === "1") {
+            setMagRange([0,5])
+            newMagRange = [0,5]
+            handleMagRangeCommit(newMagRange)
+        }
+        if (newMagType === "2") {
+            setMagRange([5,7])
+            newMagRange = [5,7]
+            handleMagRangeCommit(newMagRange)
+        }
+        if (newMagType === "3") {
+            setMagRange([7,10])
+            newMagRange = [7,10]
+            handleMagRangeCommit(newMagRange)
+        }
+    };
+    const handleMagRangeChange = (event: Event, newRange: number | number[]) => {
+        setMagRange(newRange as number[]);
+    };
+    const handleMagRangeCommit = (newMagRange: number | number[]) => {
+        const [firstMag, secondMag] = newMagRange as number[]
+        dispatch(changeMagRange(firstMag.toString(),secondMag.toString()));
+    }
     return (
         <SliderContainer>
             <Card>
                 <CustomCardContent>
+                    <TabContext value={tabValue}>
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                            <TabList onChange={handleTabChange} aria-label="lab API tabs example">
+                                <Tab label="Time Slider" value="1" />
+                                <Tab label="Magnitude Slider" value="2" />
+                            </TabList>
+                        </Box>
+                        <TabPanel value="1">
+                            <ToggleButtonGroup
+                                color="primary"
+                                value={rangeType}
+                                exclusive
+                                onChange={handleRangeTypeChange}
+                                fullWidth={true}
+                                size="small"
+                                sx={{ marginBottom: 2 }}
+                            >
+                                <ToggleButton value="1"><b>Year</b></ToggleButton>
+                                <ToggleButton value="2"><b>Month</b></ToggleButton>
+                                <ToggleButton value="3"><b>Date</b></ToggleButton>
+                            </ToggleButtonGroup>
+                            <CustomTimeSlider
+                                getAriaLabel={() => 'range'}
+                                getAriaValueText={valuetext}
+                                value={timeRange}
+                                valueLabelDisplay="auto"
+                                valueLabelFormat={valueLabelFormat}
+                                marks
+                                min={minTimeRange}
+                                max={maxTimeRange}
+                                onChange={handleRangeChange}
+                                onChangeCommitted={() => handleRangeCommit(timeRange)}
+                            />
+                            <Typography id="range-slider" align="center">
+                                {timeTypography(timeRange,rangeType)}
+                            </Typography>
+                        </TabPanel>
+                        <TabPanel value="2">
+                            <ToggleButtonGroup
+                                color="primary"
+                                value={magType}
+                                exclusive
+                                onChange={handleMagTypeChange}
+                                fullWidth={true}
+                                size="small"
+                                sx={{ marginBottom: 2 }}
+                            >
+                                <ToggleButton value="1"><b>Minor</b></ToggleButton>
+                                <ToggleButton value="2"><b>Medium</b></ToggleButton>
+                                <ToggleButton value="3"><b>Major</b></ToggleButton>
+                            </ToggleButtonGroup>
+                            <CustomMagSlider
+                                getAriaLabel={() => 'mag'}
+                                getAriaValueText={valuetext}
+                                value={magRange}
+                                valueLabelDisplay="auto"
+                                // valueLabelFormat={valueLabelFormat}
+                                marks
+                                min={minMagRange}
+                                max={maxMagRange}
+                                onChange={handleMagRangeChange}
+                                onChangeCommitted={() => handleMagRangeCommit(magRange)}
+                            />
+                            <Typography id="range-slider" align="center">
+                                {magTypography(magRange)}
+                            </Typography>
+                        </TabPanel>
+                    </TabContext>
                     <FormGroup>
                         <FormControlLabel control={ 
                             <Switch
@@ -209,34 +323,6 @@ export default function TimeSlider() {
                             />} 
                         label="Cluster View" />
                     </FormGroup>
-                    <ToggleButtonGroup
-                        color="primary"
-                        value={rangeType}
-                        exclusive
-                        onChange={handleTypeChange}
-                        fullWidth={true}
-                        size="small"
-                        sx={{ marginBottom: 2 }}
-                    >
-                        <ToggleButton value="1"><b>Year</b></ToggleButton>
-                        <ToggleButton value="2"><b>Month</b></ToggleButton>
-                        <ToggleButton value="3"><b>Date</b></ToggleButton>
-                    </ToggleButtonGroup>
-                    <CustomSlider
-                        getAriaLabel={() => 'range'}
-                        getAriaValueText={valuetext}
-                        value={range}
-                        valueLabelDisplay="auto"
-                        valueLabelFormat={valueLabelFormat}
-                        marks
-                        min={minRange}
-                        max={maxRange}
-                        onChange={handleRangeChange}
-                        onChangeCommitted={() => handleRangeCommit(range)}
-                    />
-                    <Typography id="range-slider" align="center">
-                        {rangeTypography(range,rangeType)}
-                    </Typography>
                 </CustomCardContent>
 
             </Card>
@@ -253,12 +339,22 @@ const SliderContainer = styled.div`
     margin-left:35%;
 `;
 
-const CustomSlider = muiStyle(Slider)({
+const CustomTimeSlider = muiStyle(Slider)({
     '& .MuiSlider-track': {
         background: "#3218E7"
     },
     '& .MuiSlider-rail': {
         backgroundImage: "linear-gradient(to right, #18CDE7,#00008B);"
+    },
+});
+
+const CustomMagSlider = muiStyle(Slider)({
+    '& .MuiSlider-track': {
+        background: "transparent"
+        //TODO: CHANGE COLOR
+    },
+    '& .MuiSlider-rail': {
+        backgroundImage: "linear-gradient(to right, green, orange, red);"
     },
 });
 

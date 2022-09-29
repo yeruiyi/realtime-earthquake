@@ -9,8 +9,8 @@ import { changeFocus } from '../actions';
 
 export default function TextData() {
     const dispatch = useDispatch();
-    const { startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled } = useSelector(({ navbar }: RooState) => navbar);
-    const [earthquakes, loading] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled);
+    const { startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag } = useSelector(({ navbar }: RooState) => navbar);
+    const [earthquakes, loading] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag);
 
     const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();

@@ -14,6 +14,8 @@ export default function useEarthquakesFetcher(
   maxlongitude:number,
   maxlatitude:number,
   countEnabled:boolean,
+  minMag:string,
+  maxMag:string,
   
 ): any[] {
   const [earthquakes, setEarthquakes] = useState({});
@@ -27,7 +29,7 @@ export default function useEarthquakesFetcher(
 
     const fetchEarthquakes = async () => {
       try {
-        const [data,count] = await getEarthquakes(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled );
+        const [data,count] = await getEarthquakes(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag );
         setEarthquakes(data);
         setEqCount(count);
       } catch (err) {
@@ -37,7 +39,7 @@ export default function useEarthquakesFetcher(
     };
 
     fetchEarthquakes();
-  }, [startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled ]);
+  }, [startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled,minMag, maxMag ]);
 
   return [earthquakes, loading, eqCount, error];
 }

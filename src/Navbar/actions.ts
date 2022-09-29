@@ -85,4 +85,12 @@ const changeClusterEnabled = (clusterEnabled:boolean): IAction => ({
   }
 });
 
-export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus, changeOrderBy, changeSearchRectangle, autoPlayTypeChanged, changeTimeDifference, changeCountEnabled, changeClusterEnabled  };
+const changeMagRange = (minMag:string, maxMag:string): IAction => ({
+  type: types.magRangeChanged,
+  payload: {
+    minMag,
+    maxMag
+  }
+});
+
+export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus, changeOrderBy, changeSearchRectangle, autoPlayTypeChanged, changeTimeDifference, changeCountEnabled, changeClusterEnabled, changeMagRange };

@@ -7,8 +7,8 @@ import { useSelector } from 'react-redux';
 
 
 export default function CountButton() {
-    const { startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled } = useSelector(({ navbar }: RooState) => navbar);
-    const [earthquakes,loading,eqCount] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled);
+    const { startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag } = useSelector(({ navbar }: RooState) => navbar);
+    const [earthquakes,loading,eqCount] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag);
     var count = 0
     if (!loading&&earthquakes.features) {
         return(

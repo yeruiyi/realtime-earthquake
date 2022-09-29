@@ -4,12 +4,8 @@ import styled from 'styled-components';
 import DropdownList from './DropdownList';
 import NavBarForm from './NavbarForm';
 import TextData from './TextData';
-// const brandStyle = { color: '#ffffff' };
 
 export default function NavBar() {
-  // const [isOpen, setIsOpen] = useState(false);
-
-  // const toggleNavbar = () => setIsOpen(!isOpen);
 
   return (
     <Sidebar>

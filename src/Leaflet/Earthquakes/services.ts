@@ -1,10 +1,10 @@
 import httpService from '../../api/httpService';
 
-const getEarthquakes = async (starttime: string, endtime: string, longitude:number,latitude:number, maxradius:number, orderby:string, minlongitude:number, minlatitude:number, maxlongitude:number, maxlatitude:number, countEnabled:boolean) => {
+const getEarthquakes = async (starttime: string, endtime: string, longitude:number,latitude:number, maxradius:number, orderby:string, minlongitude:number, minlatitude:number, maxlongitude:number, maxlatitude:number, countEnabled:boolean, minMag:string, maxMag:string) => {
   try {
     if (longitude != null && latitude != null && maxradius !=null){
       const response = await httpService.get(
-        `/fdsnws/event/1/query?format=geojson&starttime=${starttime}&endtime=${endtime}&longitude=${longitude}&latitude=${latitude}&maxradiuskm=${maxradius}&orderby=${orderby}`
+        `/fdsnws/event/1/query?format=geojson&starttime=${starttime}&endtime=${endtime}&longitude=${longitude}&latitude=${latitude}&maxradiuskm=${maxradius}&orderby=${orderby}&minmagnitude=${minMag}&maxmagnitude=${maxMag}`
       );
 
       const { data } = response;
@@ -12,14 +12,14 @@ const getEarthquakes = async (starttime: string, endtime: string, longitude:numb
       var count = 0;
       if (countEnabled) {
         count =  await httpService.get(
-          `/fdsnws/event/1/count?format=geojson&starttime=${starttime}&endtime=${endtime}&longitude=${longitude}&latitude=${latitude}&maxradiuskm=${maxradius}&orderby=${orderby}`
+          `/fdsnws/event/1/count?format=geojson&starttime=${starttime}&endtime=${endtime}&longitude=${longitude}&latitude=${latitude}&maxradiuskm=${maxradius}&orderby=${orderby}&minmagnitude=${minMag}&maxmagnitude=${maxMag}`
         );
       }
       return [data,count];
 
     } else if (minlongitude != null && minlatitude != null && maxlongitude != null && maxlatitude !=null) {
       const response = await httpService.get(
-        `/fdsnws/event/1/query?format=geojson&starttime=${starttime}&endtime=${endtime}&minlongitude=${minlongitude}&minlatitude=${minlatitude}&maxlongitude=${maxlongitude}&maxlatitude=${maxlatitude}&orderby=${orderby}`
+        `/fdsnws/event/1/query?format=geojson&starttime=${starttime}&endtime=${endtime}&minlongitude=${minlongitude}&minlatitude=${minlatitude}&maxlongitude=${maxlongitude}&maxlatitude=${maxlatitude}&orderby=${orderby}&minmagnitude=${minMag}&maxmagnitude=${maxMag}`
       );
 
       const { data } = response;
@@ -27,14 +27,14 @@ const getEarthquakes = async (starttime: string, endtime: string, longitude:numb
       var count = 0;
       if (countEnabled) {
         count =  await httpService.get(
-          `/fdsnws/event/1/count?format=geojson&starttime=${starttime}&endtime=${endtime}&minlongitude=${minlongitude}&minlatitude=${minlatitude}&maxlongitude=${maxlongitude}&maxlatitude=${maxlatitude}&orderby=${orderby}`
+          `/fdsnws/event/1/count?format=geojson&starttime=${starttime}&endtime=${endtime}&minlongitude=${minlongitude}&minlatitude=${minlatitude}&maxlongitude=${maxlongitude}&maxlatitude=${maxlatitude}&orderby=${orderby}&minmagnitude=${minMag}&maxmagnitude=${maxMag}`
         );
       }
       return [data,count];
 
     } else {
       const response = await httpService.get(
-        `/fdsnws/event/1/query?format=geojson&starttime=${starttime}&endtime=${endtime}&orderby=${orderby}`
+        `/fdsnws/event/1/query?format=geojson&starttime=${starttime}&endtime=${endtime}&orderby=${orderby}&minmagnitude=${minMag}&maxmagnitude=${maxMag}`
       );
 
       const { data } = response;
@@ -42,7 +42,7 @@ const getEarthquakes = async (starttime: string, endtime: string, longitude:numb
       var count = 0;
       if (countEnabled) {
         count =  await httpService.get(
-          `/fdsnws/event/1/count?format=geojson&starttime=${starttime}&endtime=${endtime}&orderby=${orderby}`
+          `/fdsnws/event/1/count?format=geojson&starttime=${starttime}&endtime=${endtime}&orderby=${orderby}&minmagnitude=${minMag}&maxmagnitude=${maxMag}`
         );
       }
       return [data,count];

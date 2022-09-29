@@ -21,6 +21,8 @@ interface IEarthquakesReducer {
   difference: number;
   countEnabled: boolean;
   clusterEnabled:boolean;
+  minMag: string;
+  maxMag: string;
 }
 
 const initialState: IEarthquakesReducer = {
@@ -43,6 +45,8 @@ const initialState: IEarthquakesReducer = {
   difference:0,
   countEnabled: true,
   clusterEnabled:false,
+  minMag:'',
+  maxMag:'',
 };
 
 // eslint-disable-next-line default-param-last
@@ -111,6 +115,12 @@ export default (state = initialState, action: IAction) => {
       return {
         ...state,
         clusterEnabled: action.payload.clusterEnabled,
+      };
+    case types.magRangeChanged:
+      return {
+        ...state,
+        minMag: action.payload.minMag,
+        maxMag: action.payload.maxMag,
       };
     default:
       return state;

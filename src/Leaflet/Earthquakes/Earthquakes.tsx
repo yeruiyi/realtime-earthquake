@@ -14,8 +14,8 @@ import { autoPlayTypeChanged } from '../../Navbar/actions';
 let geojson: GeoJSON;
 
 export default function Earthquakes() {
-  const { startTime, endTime, longitude, latitude, maxradius, orderby, focusLat, focusLon, minlongitude, minlatitude, maxlongitude, maxlatitude, autoplayEnabled, difference, countEnabled,clusterEnabled } = useSelector(({ navbar }: RooState) => navbar);
-  const [earthquakes, loading, eqCount] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled);
+  const { startTime, endTime, longitude, latitude, maxradius, orderby, focusLat, focusLon, minlongitude, minlatitude, maxlongitude, maxlatitude, autoplayEnabled, difference, countEnabled,clusterEnabled, minMag, maxMag } = useSelector(({ navbar }: RooState) => navbar);
+  const [earthquakes, loading, eqCount] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag);
   const dispatch = useDispatch();
 
   const map = useMap();
