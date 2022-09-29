@@ -17,6 +17,24 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
+
+const ExpandMore = muiStyle((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
 
 function valuetext (value: number) {
     const ret = value;
@@ -80,6 +98,8 @@ function magTypography (value:number[]) {
 
 export default function TimeSlider() {
     const dispatch = useDispatch();
+    const [expanded, setExpanded] = useState(true);
+
     const [tabValue, setTabValue] = useState('1');
     const [clusterChecked, setClusterChecked] = useState(false);
     const [rangeType, setRangeType] = useState('3');
@@ -235,96 +255,116 @@ export default function TimeSlider() {
             handleMagRangeCommit(newMagRange)
         }
     };
+
     const handleMagRangeChange = (event: Event, newRange: number | number[]) => {
         setMagRange(newRange as number[]);
     };
+
     const handleMagRangeCommit = (newMagRange: number | number[]) => {
         const [firstMag, secondMag] = newMagRange as number[]
         dispatch(changeMagRange(firstMag.toString(),secondMag.toString()));
     }
+
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+    };
     return (
         <SliderContainer>
             <Card>
-                <CustomCardContent>
-                    <TabContext value={tabValue}>
-                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                            <TabList onChange={handleTabChange} aria-label="lab API tabs example">
-                                <Tab label="Time Slider" value="1" />
-                                <Tab label="Magnitude Slider" value="2" />
-                            </TabList>
-                        </Box>
-                        <TabPanel value="1">
-                            <ToggleButtonGroup
-                                color="primary"
-                                value={rangeType}
-                                exclusive
-                                onChange={handleRangeTypeChange}
-                                fullWidth={true}
-                                size="small"
-                                sx={{ marginBottom: 2 }}
-                            >
-                                <ToggleButton value="1"><b>Year</b></ToggleButton>
-                                <ToggleButton value="2"><b>Month</b></ToggleButton>
-                                <ToggleButton value="3"><b>Date</b></ToggleButton>
-                            </ToggleButtonGroup>
-                            <CustomTimeSlider
-                                getAriaLabel={() => 'range'}
-                                getAriaValueText={valuetext}
-                                value={timeRange}
-                                valueLabelDisplay="auto"
-                                valueLabelFormat={valueLabelFormat}
-                                marks
-                                min={minTimeRange}
-                                max={maxTimeRange}
-                                onChange={handleRangeChange}
-                                onChangeCommitted={() => handleRangeCommit(timeRange)}
-                            />
-                            <Typography id="range-slider" align="center">
-                                {timeTypography(timeRange,rangeType)}
-                            </Typography>
-                        </TabPanel>
-                        <TabPanel value="2">
-                            <ToggleButtonGroup
-                                color="primary"
-                                value={magType}
-                                exclusive
-                                onChange={handleMagTypeChange}
-                                fullWidth={true}
-                                size="small"
-                                sx={{ marginBottom: 2 }}
-                            >
-                                <ToggleButton value="1"><b>Minor</b></ToggleButton>
-                                <ToggleButton value="2"><b>Medium</b></ToggleButton>
-                                <ToggleButton value="3"><b>Major</b></ToggleButton>
-                            </ToggleButtonGroup>
-                            <CustomMagSlider
-                                getAriaLabel={() => 'mag'}
-                                getAriaValueText={valuetext}
-                                value={magRange}
-                                valueLabelDisplay="auto"
-                                // valueLabelFormat={valueLabelFormat}
-                                marks
-                                min={minMagRange}
-                                max={maxMagRange}
-                                onChange={handleMagRangeChange}
-                                onChangeCommitted={() => handleMagRangeCommit(magRange)}
-                            />
-                            <Typography id="range-slider" align="center">
-                                {magTypography(magRange)}
-                            </Typography>
-                        </TabPanel>
-                    </TabContext>
-                    <FormGroup>
-                        <FormControlLabel control={ 
-                            <Switch
-                                checked={clusterChecked}
-                                onChange={handleClusterChange}
-                                inputProps={{ 'aria-label': 'controlled' }}
-                            />} 
-                        label="Cluster View" />
-                    </FormGroup>
-                </CustomCardContent>
-
+                <CustomeCardAction disableSpacing>
+                    {/* <Typography variant="h5" align="center">
+                        Query Earthquakes
+                    </Typography> */}
+                    <ExpandMore
+                        expand={expanded}
+                        onClick={handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                        >
+                        <ExpandMoreIcon />
+                    </ExpandMore>
+                </CustomeCardAction>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <CustomCardContent>
+                        <TabContext value={tabValue}>
+                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                <TabList onChange={handleTabChange} aria-label="lab API tabs example">
+                                    <Tab label="Time Slider" value="1" />
+                                    <Tab label="Magnitude Slider" value="2" />
+                                </TabList>
+                            </Box>
+                            <TabPanel value="1">
+                                <ToggleButtonGroup
+                                    color="primary"
+                                    value={rangeType}
+                                    exclusive
+                                    onChange={handleRangeTypeChange}
+                                    fullWidth={true}
+                                    size="small"
+                                    sx={{ marginBottom: 2 }}
+                                >
+                                    <ToggleButton value="1"><b>Year</b></ToggleButton>
+                                    <ToggleButton value="2"><b>Month</b></ToggleButton>
+                                    <ToggleButton value="3"><b>Date</b></ToggleButton>
+                                </ToggleButtonGroup>
+                                <CustomTimeSlider
+                                    getAriaLabel={() => 'range'}
+                                    getAriaValueText={valuetext}
+                                    value={timeRange}
+                                    valueLabelDisplay="auto"
+                                    valueLabelFormat={valueLabelFormat}
+                                    marks
+                                    min={minTimeRange}
+                                    max={maxTimeRange}
+                                    onChange={handleRangeChange}
+                                    onChangeCommitted={() => handleRangeCommit(timeRange)}
+                                />
+                                <Typography id="range-slider" align="center">
+                                    {timeTypography(timeRange,rangeType)}
+                                </Typography>
+                            </TabPanel>
+                            <TabPanel value="2">
+                                <ToggleButtonGroup
+                                    color="primary"
+                                    value={magType}
+                                    exclusive
+                                    onChange={handleMagTypeChange}
+                                    fullWidth={true}
+                                    size="small"
+                                    sx={{ marginBottom: 2 }}
+                                >
+                                    <ToggleButton value="1"><b>Minor</b></ToggleButton>
+                                    <ToggleButton value="2"><b>Medium</b></ToggleButton>
+                                    <ToggleButton value="3"><b>Major</b></ToggleButton>
+                                </ToggleButtonGroup>
+                                <CustomMagSlider
+                                    getAriaLabel={() => 'mag'}
+                                    getAriaValueText={valuetext}
+                                    value={magRange}
+                                    valueLabelDisplay="auto"
+                                    // valueLabelFormat={valueLabelFormat}
+                                    marks
+                                    min={minMagRange}
+                                    max={maxMagRange}
+                                    onChange={handleMagRangeChange}
+                                    onChangeCommitted={() => handleMagRangeCommit(magRange)}
+                                />
+                                <Typography id="range-slider" align="center">
+                                    {magTypography(magRange)}
+                                </Typography>
+                            </TabPanel>
+                        </TabContext>
+                        <FormGroup>
+                            <FormControlLabel control={ 
+                                <Switch
+                                    checked={clusterChecked}
+                                    onChange={handleClusterChange}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                />} 
+                            label="Cluster View" />
+                        </FormGroup>
+                    </CustomCardContent>
+                </Collapse>
             </Card>
         </SliderContainer>
     );
@@ -338,6 +378,10 @@ const SliderContainer = styled.div`
     width:30%;
     margin-left:35%;
 `;
+
+const CustomeCardAction = muiStyle(CardActions)({
+    padding:'0px 8px 0px 0px'
+});
 
 const CustomTimeSlider = muiStyle(Slider)({
     '& .MuiSlider-track': {
@@ -359,5 +403,5 @@ const CustomMagSlider = muiStyle(Slider)({
 });
 
 const CustomCardContent = muiStyle(CardContent)({
-    padding:'25px'
+    padding:'0px 25px 25px 25px'
 });
