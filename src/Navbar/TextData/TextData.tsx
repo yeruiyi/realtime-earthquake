@@ -60,10 +60,6 @@ export default function TextData() {
                         </Card>
                     );
                 })}
-                    {/* 
-                    <Button>
-                        Go somewhere
-                    </Button> */}
             </TextContainer>
         );
     } else {

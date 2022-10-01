@@ -9,6 +9,17 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeOrderBy } from '../actions';
 
+function format (inputDate: Date) {
+  var date;
+  if (inputDate.getDate() < 10) {
+    date =`0${inputDate.getDate()}`
+  } else {
+    date = inputDate.getDate()
+  }
+  var formatDate = inputDate.getFullYear() + "-"+ Number(inputDate.getMonth()+1) +"-" + date;
+
+  return formatDate
+}
 export default function NavBarForm() {
   const dispatch = useDispatch();
   const [startTime, setStartTime] = useState('');
@@ -19,15 +30,21 @@ export default function NavBarForm() {
   const [orderBy, setOrderBy] = useState('');
   const [startTimeTooltipOpen, setStartTimeTooltipOpen] = useState(false);
   const [endTimeTooltipOpen, setEndTimeTooltipOpen] = useState(false);
-  // const [toggleIcon, setToggleIcon] = useState(false);
+  const today = new Date();
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    // clear dropdown default value
-    dispatch(changeNumOfDays('Select Period'));
-    // pass the query params to be able to perform query
-    dispatch(changeStartTime(startTime));
-    dispatch(changeEndTime(endTime));
+
+    if (startTime != '' || endTime!='') {
+      dispatch(changeNumOfDays('Select Period'));
+    }
+    if (startTime != '') {
+      dispatch(changeStartTime(startTime));
+    }
+    if (endTime != ''){
+      dispatch(changeEndTime(endTime));
+    }
+
     if (longitude.length !== 0 && latitude.length !== 0  && maxradius.length !== 0) {
       dispatch(changeSearchCircle(Number(longitude),Number(latitude),Number(maxradius)));
     } else {
@@ -40,7 +57,7 @@ export default function NavBarForm() {
     setLongitude('');
     setlatitude('');
     setmaxradius('');
-    setOrderBy('');
+    // setOrderBy('');
 
   };
 
@@ -138,6 +155,7 @@ export default function NavBarForm() {
           type="date"
           value={startTime}
           onChange={handleStartTimeChange}
+          max={endTime}
         />
         <InfoTip
           target="startTime"
@@ -150,6 +168,7 @@ export default function NavBarForm() {
           type="date"
           value={endTime}
           onChange={handleEndTimeChange}
+          max={format(today)}
         />
         <InfoTip
           target="endTime"

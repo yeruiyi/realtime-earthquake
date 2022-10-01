@@ -24,11 +24,11 @@ export default function DropdownList() {
 
   const selectNumOfDays = (e: React.MouseEvent<HTMLElement>): void => {
     const dropdownvalue = e.currentTarget.textContent;
+
     if (dropdownvalue) {
       dispatch(changeNumOfDays(dropdownvalue));
       dispatch(changeStartTime(convertDropdownValue(dropdownvalue)));
       dispatch(changeSearchCircle(null,null,null))
-      dispatch(changeOrderBy("time"));
     }
   };
 

@@ -14,12 +14,12 @@ import Grow from '@mui/material/Grow';
 import { styled as muiStyle } from '@mui/material/styles';
 import { autoPlayTypeChanged } from '../../Navbar/actions';
 
-const options = ['time', 'magnitude'];
+const options = ['1x', '2x'];
 export default function AutoPlay() {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleClick = () => {
     dispatch(autoPlayTypeChanged(true,options[selectedIndex]));
@@ -53,7 +53,7 @@ export default function AutoPlay() {
   return(
     <DropdownContainer>
       <CustomButtonGroup variant="contained"  aria-label="outlined primary button group">
-        <Button onClick={handleClick}>AutoPlay By {options[selectedIndex]}</Button>
+        <Button onClick={handleClick}>AutoPlay By Time {options[selectedIndex]}</Button>
         <Button
             size="small"
             aria-controls={open ? 'split-button-menu' : undefined}

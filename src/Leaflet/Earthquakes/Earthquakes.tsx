@@ -98,9 +98,6 @@ export default function Earthquakes() {
         onEachFeature,
         pointToLayer: (feature: FeatureProps, latlng: LatLng) => {
           const magnitude = feature.properties.mag;
-          if (magnitude == 5.5) {
-            console.log(`circle marker ${latlng}`)
-          }
           return L.circleMarker(latlng, geojsonMarkerOptions(magnitude));
         }
       });
@@ -114,7 +111,6 @@ export default function Earthquakes() {
       previousFocus = [focusLat,focusLon];
 
       const coordinates = latLng(focusLat, focusLon);
-      console.log(`Focus marker ${focusLat},${focusLon}`)
       var customIcon = new L.Icon({
         iconUrl: require('../images/marker-icon.png'),
         shadowUrl: require('../images/marker-shadow.png'),

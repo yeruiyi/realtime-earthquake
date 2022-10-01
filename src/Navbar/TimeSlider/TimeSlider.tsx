@@ -219,7 +219,6 @@ export default function TimeSlider() {
         const timeDifference = second.getTime() - first.getTime()
         dispatch(changeStartTime(firstDate.toISOString()));
         dispatch(changeEndTime(secondDate.toISOString()));
-        dispatch(changeOrderBy("time-asc"))
         dispatch(changeTimeDifference(timeDifference))
     }
 

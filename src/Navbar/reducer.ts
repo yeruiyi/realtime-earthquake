@@ -26,9 +26,9 @@ interface IEarthquakesReducer {
 }
 
 const initialState: IEarthquakesReducer = {
-  startTime: 'NOW - 3days',
+  startTime: 'NOW - 1day',
   endTime: '',
-  numOfDays: '3 days',
+  numOfDays: '1 day',
   longitude: null,
   latitude: null,
   maxradius: null,
@@ -45,7 +45,7 @@ const initialState: IEarthquakesReducer = {
   difference:0,
   countEnabled: true,
   clusterEnabled:false,
-  minMag:'',
+  minMag:'0.01',
   maxMag:'',
 };
 
