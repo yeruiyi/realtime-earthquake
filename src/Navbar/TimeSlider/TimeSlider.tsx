@@ -7,7 +7,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
-import { changeStartTime, changeEndTime, changeOrderBy, changeTimeDifference, changeClusterEnabled, changeMagRange } from '../actions';
+import { changeStartTime, changeEndTime, changeTimeDifference, changeClusterEnabled, changeMagRange } from '../actions';
 import { styled as muiStyle } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
@@ -21,6 +21,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import { useSelector } from 'react-redux';
+import { RooState } from '../../store';
+import { useEffect } from 'react';
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
@@ -97,11 +100,15 @@ function magTypography (value:number[]) {
 }
 
 export default function TimeSlider() {
+    const { autoplayEnabled } = useSelector(({ navbar }: RooState) => navbar);
+
     const dispatch = useDispatch();
     const [expanded, setExpanded] = useState(true);
 
     const [tabValue, setTabValue] = useState('1');
     const [clusterChecked, setClusterChecked] = useState(false);
+    const [switchDisabled, setSwitchDisabled] = useState(false)
+
     const [rangeType, setRangeType] = useState('3');
     const [timeRange, setTimeRange] = useState([44,44]);
     const [minTimeRange, setMinTimeRange] = useState(13);
@@ -114,6 +121,15 @@ export default function TimeSlider() {
     const [magRange, setMagRange] = useState([7,10]);
     const [minMagRange, setMinMagRange] = useState(0);
     const [maxMagRange, setMaxMagRange] = useState(10);
+
+    
+    useEffect(() => {
+        if (autoplayEnabled) {
+            setSwitchDisabled(true)
+        } else {
+            setSwitchDisabled(false)
+        }
+    },[autoplayEnabled])
 
     const dates = (firstDraft: number , secondDraft: number ) => {
         const firstDate = new Date();
@@ -359,6 +375,7 @@ export default function TimeSlider() {
                                     checked={clusterChecked}
                                     onChange={handleClusterChange}
                                     inputProps={{ 'aria-label': 'controlled' }}
+                                    disabled={switchDisabled}
                                 />} 
                             label="Cluster View" />
                         </FormGroup>

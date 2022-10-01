@@ -13,13 +13,26 @@ import Popper from '@mui/material/Popper';
 import Grow from '@mui/material/Grow';
 import { styled as muiStyle } from '@mui/material/styles';
 import { autoPlayTypeChanged } from '../../Navbar/actions';
+import { useSelector } from 'react-redux';
+import { RooState } from '../../store';
+import { useEffect } from 'react';
 
 const options = ['1x', '2x'];
 export default function AutoPlay() {
+  const { clusterEnabled } = useSelector(({ navbar }: RooState) => navbar);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [btnDisabled, setBtnDisabled] = useState(false)
+
+  useEffect(() => {
+    if (clusterEnabled) {
+      setBtnDisabled(true)
+    } else {
+      setBtnDisabled(false)
+    }
+  },[clusterEnabled])
 
   const handleClick = () => {
     dispatch(autoPlayTypeChanged(true,options[selectedIndex]));
@@ -53,7 +66,7 @@ export default function AutoPlay() {
   return(
     <DropdownContainer>
       <CustomButtonGroup variant="contained"  aria-label="outlined primary button group">
-        <Button onClick={handleClick}>AutoPlay By Time {options[selectedIndex]}</Button>
+        <Button disabled={btnDisabled} onClick={handleClick}>AutoPlay By Time {options[selectedIndex]}</Button>
         <Button
             size="small"
             aria-controls={open ? 'split-button-menu' : undefined}
@@ -61,6 +74,7 @@ export default function AutoPlay() {
             aria-label="select merge strategy"
             aria-haspopup="menu"
             onClick={handleToggle}
+            disabled={btnDisabled}
           >
             <ArrowDropDownIcon />
         </Button>
