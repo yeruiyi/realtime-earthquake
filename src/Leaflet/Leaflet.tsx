@@ -9,9 +9,9 @@ import Earthquakes from './Earthquakes';
 import Legend from './Legend';
 import tectonicPlates from './PB2002_boundaries.json';
 import { mapHeight, tectonicPlatesStyle, tileLayers } from './constants';
-import FocusMarker from './FocusMarker';
 import DrawShape from './DrawShape'
 import Cluster from './Cluster';
+
 export default function Leaflet() {
   return (
     <MapContainer center={[0, 0]} zoom={3} style={mapHeight}>
@@ -29,7 +29,6 @@ export default function Leaflet() {
         </LayersControl.Overlay>
       </LayersControl>
       <Cluster/>
-      <FocusMarker />
       <Earthquakes />
       <ScaleControl />
       <Legend />

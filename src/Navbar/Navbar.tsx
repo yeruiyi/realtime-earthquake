@@ -32,6 +32,7 @@ const Sidebar = styled.div`
 const NavContainer = styled.div`
   margin-left: 20px;
   margin-right: 20px;
+  min-height:100vh;
 `;
 
 

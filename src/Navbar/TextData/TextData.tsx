@@ -6,6 +6,7 @@ import { Card, Button, CardTitle } from "reactstrap";
 import { textProps } from './models';
 import { timeConverter } from '../../Leaflet/Earthquakes/utils';
 import { changeFocus } from '../actions';
+import {circleMarkerColor} from '../../Leaflet/utils'
 
 export default function TextData() {
     const dispatch = useDispatch();
@@ -51,7 +52,7 @@ export default function TextData() {
                                     </div>
                                 </CardTxt>
                                 <ButtonContainer>
-                                    <Button onClick={buttonHandler} value={[lat,lon,]}>
+                                    <Button style={{backgroundColor: circleMarkerColor(mag),color:"#000000",border:"none" }} onClick={buttonHandler} value={[lat,lon,]}>
                                         {mag.toFixed(1)}
                                     </Button>
                                 </ButtonContainer>

@@ -12,20 +12,14 @@ import { FeatureProps } from './models';
 import { autoPlayTypeChanged } from '../../Navbar/actions';
 
 let geojson: GeoJSON;
-
+var focusMarker: L.Layer;
+var previousFocus = [0,0];
 export default function Earthquakes() {
   const { startTime, endTime, longitude, latitude, maxradius, orderby, focusLat, focusLon, minlongitude, minlatitude, maxlongitude, maxlatitude, autoplayEnabled, difference, countEnabled,clusterEnabled, minMag, maxMag } = useSelector(({ navbar }: RooState) => navbar);
   const [earthquakes, loading, eqCount] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag);
   const dispatch = useDispatch();
 
   const map = useMap();
-
-  if (map && focusLat !== 0 && focusLon !== 0 ) {
-    const coordinates = latLng(focusLat, focusLon);
-    map.flyTo(coordinates, 13, {
-      duration: 2
-    })
-  }
 
   let timeHash = new Map()
   let timeArray: any[] = []
@@ -57,6 +51,7 @@ export default function Earthquakes() {
   if (clusterEnabled) {
     map.removeLayer(geojson);
   } 
+
   if (autoplayEnabled) {
     map.removeLayer(geojson);
 
@@ -103,16 +98,40 @@ export default function Earthquakes() {
         onEachFeature,
         pointToLayer: (feature: FeatureProps, latlng: LatLng) => {
           const magnitude = feature.properties.mag;
+          if (magnitude == 5.5) {
+            console.log(`circle marker ${latlng}`)
+          }
           return L.circleMarker(latlng, geojsonMarkerOptions(magnitude));
         }
       });
 
-      if (map) geojson.addTo(map);
+      if (map) geojson.addTo(map)
 
     }
 
     
-  }, [earthquakes, map, clusterEnabled]);
+    if (map && focusLat !== 0 && focusLon !== 0 && previousFocus[0]!=focusLat && previousFocus[1]!=focusLon ) {
+      previousFocus = [focusLat,focusLon];
+
+      const coordinates = latLng(focusLat, focusLon);
+      console.log(`Focus marker ${focusLat},${focusLon}`)
+      var customIcon = new L.Icon({
+        iconUrl: require('../images/marker-icon.png'),
+        shadowUrl: require('../images/marker-shadow.png'),
+      });
+  
+      if (focusMarker) {
+        map.removeLayer(focusMarker)
+      }
+  
+      focusMarker = new L.Marker([focusLat+0.0001, focusLon-0.00008], {icon: customIcon})
+      focusMarker.addTo(map)
+  
+      map.flyTo(coordinates, 15, {
+        duration: 2
+      })
+    }
+  }, [earthquakes, map, clusterEnabled,focusLat,focusLon]);
 
   if (loading) return <Spinner />;
 

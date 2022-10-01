@@ -149,6 +149,3 @@ export default function App() {
 //   }
 // `;
 
-// const BodyContainer = styled.div`
-//   margin-left: 10%; 
-// `;
