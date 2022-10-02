@@ -29,9 +29,12 @@ export default function useEarthquakesFetcher(
 
     const fetchEarthquakes = async () => {
       try {
-        const [data,count] = await getEarthquakes(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag );
+        const [data,count,err] = await getEarthquakes(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag );
         setEarthquakes(data);
         setEqCount(count);
+        if (err) {
+          setError(true);
+        }
       } catch (err) {
         setError(true);
       }

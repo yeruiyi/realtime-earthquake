@@ -15,7 +15,7 @@ const getEarthquakes = async (starttime: string, endtime: string, longitude:numb
           `/fdsnws/event/1/count?format=geojson&starttime=${starttime}&endtime=${endtime}&longitude=${longitude}&latitude=${latitude}&maxradiuskm=${maxradius}&orderby=${orderby}&minmagnitude=${minMag}&maxmagnitude=${maxMag}`
         );
       }
-      return [data,count];
+      return [data,count,false];
 
     } else if (minlongitude != null && minlatitude != null && maxlongitude != null && maxlatitude !=null) {
       const response = await httpService.get(
@@ -30,7 +30,7 @@ const getEarthquakes = async (starttime: string, endtime: string, longitude:numb
           `/fdsnws/event/1/count?format=geojson&starttime=${starttime}&endtime=${endtime}&minlongitude=${minlongitude}&minlatitude=${minlatitude}&maxlongitude=${maxlongitude}&maxlatitude=${maxlatitude}&orderby=${orderby}&minmagnitude=${minMag}&maxmagnitude=${maxMag}`
         );
       }
-      return [data,count];
+      return [data,count,false];
 
     } else {
       const response = await httpService.get(
@@ -45,12 +45,12 @@ const getEarthquakes = async (starttime: string, endtime: string, longitude:numb
           `/fdsnws/event/1/count?format=geojson&starttime=${starttime}&endtime=${endtime}&orderby=${orderby}&minmagnitude=${minMag}&maxmagnitude=${maxMag}`
         );
       }
-      return [data,count];
+      return [data,count,false];
     }
 
   } catch (error) {
     console.log('There was an error while getting the earthquakes', error);
-    return [false,0];
+    return [false,0,true];
   }
 };
 

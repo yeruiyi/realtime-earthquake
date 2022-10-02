@@ -388,7 +388,7 @@ export default function TimeSlider() {
 
 const SliderContainer = styled.div`
     position: absolute;
-    bottom: 60px;
+    bottom: 100px;
     z-index: 314159;
     margin:auto;
     width:30%;

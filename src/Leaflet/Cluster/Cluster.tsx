@@ -1,15 +1,24 @@
-import L, { LatLng, GeoJSON, latLng } from 'leaflet';
+import * as React from 'react';
+import L from 'leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import { Marker, Popup } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import useEarthquakesFetcher from '../Earthquakes/hooks';
 import { useSelector } from 'react-redux';
 import { RooState } from '../../store';
-import { onEachFeature } from '../Earthquakes/utils';
-import { FeatureProps } from '../Earthquakes/models';
 import Spinner from '../../Spinner';
 import styled from 'styled-components';
 import { textProps } from '../../Navbar/TextData/models';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const timeConverter = (time: number, offset: number): string => {
     const d = new Date(time);
     const utc = d.getTime() + d.getTimezoneOffset() * 60000; // This converts to UTC 00:00
@@ -22,10 +31,27 @@ const customIcon = new L.Icon({
     iconSize: new L.Point(40, 47)
 });
 
-// let geojson: GeoJSON;
+
 export default function Cluster() {
     const { startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled,clusterEnabled,minMag, maxMag } = useSelector(({ navbar }: RooState) => navbar);
-    const [earthquakes, loading, eqCount] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag);
+    const [earthquakes, loading, eqCount,error] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag);
+    const [open, setOpen] = React.useState(true);
+    
+    React.useEffect(() => {
+        if (error) {
+            setOpen(true);
+        } else {
+            setOpen(false)
+        }
+    },[error])
+    
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+    };
 
     if (!loading && clusterEnabled){
         return (
@@ -62,6 +88,14 @@ export default function Cluster() {
         )
     } else if (loading) {
         return ( <Spinner /> )
+    } else if (error) {
+        return (
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                    Earthquake data exceeds system storage!
+                </Alert>
+            </Snackbar>
+        )
     } else {
         return ( <></> )
     }
