@@ -44,24 +44,6 @@ function valuetext (value: number) {
     return `${ret}`;
 }
 
-const displayTypography = (firstDraft: number , secondDraft: number , type:number ) => {
-    var differenceText = secondDraft - firstDraft
-    if ( type == 3 ) {
-        return `Data for last ${differenceText} days`
-    } else if ( type == 2 ) {
-        if(differenceText == 0 ) {
-            return `Data for current months`
-        } else {
-            return `Data for last ${differenceText} months`
-        }
-    } else if (type == 1 ) {
-        if(differenceText == 0 ) {
-            return `Data for current year`
-        } else {
-            return `Data for last ${differenceText} year`
-        }
-    }
-};
 
 function format(inputDate: Date,inputType: number) {
     let date,month;
@@ -82,15 +64,6 @@ function format(inputDate: Date,inputType: number) {
     } else {
         return `${date}/${month}`;
     }
-}
-
-function timeTypography (value:number[], type: string) {
-    if (JSON.stringify(value) !== JSON.stringify([44, 44])) {
-        const [firstDraft, secondDraft] = value;
-        const displayText = displayTypography(firstDraft, secondDraft, parseInt(type));
-        return displayText;
-    }
-    return 'Data for the today';
 }
 
 function magTypography (value:number[]) {
@@ -201,6 +174,37 @@ export default function TimeSlider() {
         
         return `${ret}`;
     }
+
+    const displayTypography = (firstDraft: number , secondDraft: number , type:number ) => {
+        var differenceText = firstDraft - secondDraft
+        var firstText = valueLabelFormat(firstDraft)
+        var secondText = valueLabelFormat(secondDraft)
+        if ( type == 3 ) {
+            return `Data from ${firstText} to ${secondText}`
+        } else if ( type == 2 ) {
+            if(differenceText == 0 ) {
+                return `Data for current months`
+            } else {
+                return `Data from ${firstText} to ${secondText}`
+            }
+        } else if (type == 1 ) {
+            if(differenceText == 0 ) {
+                return `Data for current year`
+            } else {
+                return `Data from ${firstText} to ${secondText}`
+            }
+        }
+    };
+    
+    function timeTypography (value:number[], type: string) {
+        if (JSON.stringify(value) !== JSON.stringify([44, 44])) {
+            const [firstDraft, secondDraft] = value;
+            const displayText = displayTypography(firstDraft, secondDraft, parseInt(type));
+            return displayText;
+        }
+        return 'Data for the today';
+    }
+    
 
     const handleRangeTypeChange = (event: React.MouseEvent<HTMLElement>, newRangeType: string,) => {
         setRangeType(newRangeType);
