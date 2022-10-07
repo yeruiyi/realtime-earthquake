@@ -1,0 +1,9 @@
+.alert-text {
+    color: red;
+    display: block;
+    font-size: 18px;
+}
+.alert-mark {
+    color: red;
+    font-size: 24px;
+}

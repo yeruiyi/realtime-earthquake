@@ -322,11 +322,12 @@ export default function TimeSlider() {
                                     size="small"
                                     sx={{ marginBottom: 2 }}
                                 >
-                                    <ToggleButton value="1"><b>Year</b></ToggleButton>
-                                    <ToggleButton value="2"><b>Month</b></ToggleButton>
-                                    <ToggleButton value="3"><b>Date</b></ToggleButton>
+                                    <ToggleButton id="year" value="1"><b>Year</b></ToggleButton>
+                                    <ToggleButton id="month" value="2"><b>Month</b></ToggleButton>
+                                    <ToggleButton id="date" value="3"><b>Date</b></ToggleButton>
                                 </ToggleButtonGroup>
                                 <CustomTimeSlider
+                                    id="time-slider"
                                     getAriaLabel={() => 'range'}
                                     getAriaValueText={valuetext}
                                     value={timeRange}

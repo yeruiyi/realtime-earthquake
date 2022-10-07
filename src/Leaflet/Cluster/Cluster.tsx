@@ -75,7 +75,7 @@ export default function Cluster() {
                                 <PopupHeader> {feature.properties.title} </PopupHeader>
                                 <b>Place</b>: {feature.properties.place} <br/>
                                 <b>Time (GMC+3)</b>: {timeConverter(feature.properties.time, 3)} <br/>
-                                <b>Lat</b>: {lat} &nbsp;
+                                <b>Lat</b>: {lat} bsp;
                                 <b>Lon</b>: {lon} <br/>
                                 <b>Depth</b>: {feature.geometry.coordinates[2]} km <br/>
                                 <b>Magnitude</b>: {mag} Richter <br/>

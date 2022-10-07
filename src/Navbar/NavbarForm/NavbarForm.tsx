@@ -8,6 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeOrderBy } from '../actions';
+import './alertStyle.css';
 
 function format (inputDate: Date) {
   var date;
@@ -20,6 +21,10 @@ function format (inputDate: Date) {
 
   return formatDate
 }
+function isValidDate(inputDate: string) {
+  return !isNaN(Date.parse(inputDate));
+}
+
 export default function NavBarForm() {
   const dispatch = useDispatch();
   const [startTime, setStartTime] = useState('');
@@ -30,34 +35,107 @@ export default function NavBarForm() {
   const [orderBy, setOrderBy] = useState('');
   const [startTimeTooltipOpen, setStartTimeTooltipOpen] = useState(false);
   const [endTimeTooltipOpen, setEndTimeTooltipOpen] = useState(false);
+  const [invalidDate, setInvalidDate] = useState(false);
+  const [emptyDate, setEmptyDate] = useState(false);
+  const [invalidLongitude, setInvalidLongitude] = useState(false);
+  const [invalidLatitude, setInvalidLatitude] = useState(false);
+  const [invalidRadius, setInvalidRadius] = useState(false);
+  const [emptyCoordinate, setEmptyCoordinate] = useState(false);
+
   const today = new Date();
+
+  function validation (start: string, end:string,longitude:string,latitude:string,radius:string ){
+    if(start != '') {
+      if(!isValidDate(start)) {
+        setInvalidDate(true)
+        return false;
+      }
+    } 
+
+    if(end != '') {
+      if(!isValidDate(end)) {
+        setInvalidDate(true)
+        return false;
+      }
+    }
+
+    if ((start != '' && end == '') ||start == '' && end != '') {
+      setEmptyDate(true)
+      return false;
+    }
+
+    if ((longitude.length !== 0)) {
+      if(Number(longitude)< -180 || Number(longitude)> 180 ){
+        setInvalidLongitude(true)
+        return false;
+      }
+    }
+
+    if ((latitude.length !== 0)) {
+      if(Number(latitude)< -90 || Number(latitude)> 90 ){
+        setInvalidLatitude(true)
+        return false;
+      }
+    }
+
+    if ((radius.length !== 0)) {
+      if(Number(radius)< 0 || Number(radius)> 20001.6 ){
+        setInvalidRadius(true)
+        return false;
+      }
+    }
+
+    if ((longitude.length !== 0 && (latitude.length || radius.length) == 0 ) || (latitude.length !== 0 && (longitude.length || radius.length) == 0 )  || (radius.length !== 0 && (longitude.length || latitude.length) == 0 ) 
+         || (longitude.length !== 0 && latitude.length!== 0 && radius.length == 0 )|| (longitude.length !== 0 && radius.length!== 0 && latitude.length == 0 )|| (latitude.length !== 0 && radius.length!== 0 && longitude.length == 0 )) {
+      setEmptyCoordinate(true)
+      return false;
+    }
+
+    return true;
+
+  }
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    if (validation(startTime, endTime, longitude, latitude, maxradius )) {
+      setInvalidDate(false)
+      setEmptyDate(false)
+      setInvalidLongitude(false)
+      setInvalidLatitude(false)
+      setInvalidRadius(false)
+      setEmptyCoordinate(false)
 
-    if (startTime != '' || endTime!='') {
-      dispatch(changeNumOfDays('Select Period'));
-    }
-    if (startTime != '') {
-      dispatch(changeStartTime(startTime));
-    }
-    if (endTime != ''){
-      dispatch(changeEndTime(endTime));
-    }
-
-    if (longitude.length !== 0 && latitude.length !== 0  && maxradius.length !== 0) {
-      dispatch(changeSearchCircle(Number(longitude),Number(latitude),Number(maxradius)));
+      if (startTime != '' || endTime!='') {
+        dispatch(changeNumOfDays('Select Period'));
+      }
+      if (startTime != '') {
+        dispatch(changeStartTime(startTime));
+      }
+      if (endTime != ''){
+        dispatch(changeEndTime(endTime));
+      }
+  
+      if (longitude.length !== 0 && latitude.length !== 0  && maxradius.length !== 0) {
+        dispatch(changeSearchCircle(Number(longitude),Number(latitude),Number(maxradius)));
+      } else {
+        dispatch(changeSearchCircle(null,null,null))
+      }
+      dispatch(changeOrderBy(orderBy));
+  
+      setStartTime('');
+      setEndTime('');
+      setLongitude('');
+      setlatitude('');
+      setmaxradius('');
+  
     } else {
-      dispatch(changeSearchCircle(null,null,null))
+      setStartTime('');
+      setEndTime('');
+      setLongitude('');
+      setlatitude('');
+      setmaxradius('');
     }
-    dispatch(changeOrderBy(orderBy));
 
-    setStartTime('');
-    setEndTime('');
-    setLongitude('');
-    setlatitude('');
-    setmaxradius('');
-    // setOrderBy('');
 
   };
 
@@ -101,6 +179,7 @@ export default function NavBarForm() {
             type="number"
             onChange={handleLongitudeChange}
           />
+          {(invalidLongitude|| emptyCoordinate) ? <span className="alert-mark">&nbsp;!</span> : <></>}
         </InputGroup>
         <br />
         <InputGroup>
@@ -113,6 +192,7 @@ export default function NavBarForm() {
             type="number"
             onChange={handleLatitudeChange}
           />
+           {(invalidLatitude|| emptyCoordinate)  ? <span className="alert-mark">&nbsp;!</span> : <></>}
         </InputGroup>
         <br/>
         <InputGroup>
@@ -125,6 +205,7 @@ export default function NavBarForm() {
             type="number"
             onChange={handleMaxradiusChange}
           />
+          {(invalidRadius|| emptyCoordinate) ? <span className="alert-mark">&nbsp;!</span> : <></>}
         </InputGroup>
         <br/>
       </div>
@@ -175,7 +256,9 @@ export default function NavBarForm() {
           tooltipOpen={endTimeTooltipOpen}
           setTooltipOpen={setEndTimeTooltipOpen}
         />
+         {(invalidDate || emptyDate) ? <span className="alert-text">&nbsp;Date is invalid</span> : <></>}
       </div>
+      {/* {invalidDate ? <div><span className="alert-text">Date is invalid</span></div> : <></>} */}
       <OrderByContainer>
         <FormControl variant="standard" sx={{ s: 0.5, minWidth: 120 }}>
           <InputLabel id="demo-simple-select-standard-label">&nbsp;Order By</InputLabel>
