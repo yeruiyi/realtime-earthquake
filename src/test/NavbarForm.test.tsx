@@ -37,7 +37,7 @@ describe('NavBarForm', () => {
         expect(maxradiusInputElement.value).toBe("");
     });
 
-    test("should allow update of all inputs", async () => {
+    test("should allow update of time inputs", async () => {
         store = mockStore(initialState);
         const { container } = render(
             <Provider store={store}>
@@ -46,16 +46,26 @@ describe('NavBarForm', () => {
         );
         const startTimeInputElement = getById<HTMLInputElement>(container, 'startTime');
         const endTimeInputElement = getById<HTMLInputElement>(container, 'endTime');
+        await userEvent.type(startTimeInputElement, "2022-09-13");
+        await userEvent.type(endTimeInputElement, "2022-09-13");
+        expect(startTimeInputElement.value).toBe("2022-09-13");
+        expect(endTimeInputElement.value).toBe("2022-09-13");
+    });
+
+    test("should allow update of location inputs", async () => {
+        store = mockStore(initialState);
+        const { container } = render(
+            <Provider store={store}>
+                <NavBarForm />
+            </Provider>
+        );
+
         const longitudeInputElement =  getById<HTMLInputElement>(container, 'longitude');
         const latitudeInputElement = getById<HTMLInputElement>(container, 'latitude');
         const maxradiusInputElement = getById<HTMLInputElement>(container, 'maxradius');
-        await userEvent.type(startTimeInputElement, "2022-09-13");
-        await userEvent.type(endTimeInputElement, "2022-09-13");
         await userEvent.type(longitudeInputElement, "20");
         await userEvent.type(latitudeInputElement, "50");
         await userEvent.type(maxradiusInputElement, "100");
-        expect(startTimeInputElement.value).toBe("2022-09-13");
-        expect(endTimeInputElement.value).toBe("2022-09-13");
         expect(longitudeInputElement.value).toBe("20");
         expect(latitudeInputElement.value).toBe("50");
         expect(maxradiusInputElement.value).toBe("100");
@@ -68,10 +78,11 @@ describe('NavBarForm', () => {
                 <NavBarForm />
             </Provider>
         );
-        const timeInputElement = getById<HTMLInputElement>(container, 'startTime');
-        await userEvent.type(timeInputElement, `0001-09-13[Enter]`);
-
-        expect(timeInputElement.value).toBe("");
+        const startTimeInputElement = getById<HTMLInputElement>(container, 'startTime');
+        const endTimeInputElement = getById<HTMLInputElement>(container, 'endTime');
+        await userEvent.type(startTimeInputElement, `0001-09-13`);
+        await userEvent.type(endTimeInputElement, `2002-09-13[Enter]`);
+        expect(startTimeInputElement.value).toBe("");
 
     });
 
@@ -82,10 +93,11 @@ describe('NavBarForm', () => {
                 <NavBarForm />
             </Provider>
         );
-        const timeInputElement = getById<HTMLInputElement>(container, 'endTime');
-        await userEvent.type(timeInputElement, `0001-09-13[Enter]`);
-
-        expect(timeInputElement.value).toBe("");
+        const startTimeInputElement = getById<HTMLInputElement>(container, 'startTime');
+        const endTimeInputElement = getById<HTMLInputElement>(container, 'endTime');
+        await userEvent.type(endTimeInputElement, `0001-09-13`);
+        await userEvent.type(startTimeInputElement, `2002-09-13[Enter]`);
+        expect(endTimeInputElement.value).toBe("");
 
     });
 
@@ -105,6 +117,36 @@ describe('NavBarForm', () => {
         expect(endTimeInputElement.value).toBe("");
     });
 
+    
+    test("should not allow input start time before input end time ", async () => {
+        store = mockStore(initialState);
+        const { container } = render(
+            <Provider store={store}>
+                <NavBarForm />
+            </Provider>
+        );
+        const startTimeInputElement = getById<HTMLInputElement>(container, 'startTime');
+        const endTimeInputElement = getById<HTMLInputElement>(container, 'endTime');
+        await userEvent.type(startTimeInputElement, `2022-09-13`);
+        await userEvent.type(endTimeInputElement, `2022-08-10[Enter]`);
+        expect(startTimeInputElement.value).toBe("");
+        expect(endTimeInputElement.value).toBe("");
+    });
+
+    test("should not allow input end time before today ", async () => {
+        store = mockStore(initialState);
+        const { container } = render(
+            <Provider store={store}>
+                <NavBarForm />
+            </Provider>
+        );
+        const startTimeInputElement = getById<HTMLInputElement>(container, 'startTime');
+        const endTimeInputElement = getById<HTMLInputElement>(container, 'endTime');
+        await userEvent.type(startTimeInputElement, `2022-09-13`);
+        await userEvent.type(endTimeInputElement, `2055-09-13[Enter]`);
+        expect(endTimeInputElement.value).toBe("");
+    });
+
     test("should not submit when longitude is invalid", async () => {
         store = mockStore(initialState);
         const { container } = render(
@@ -113,8 +155,11 @@ describe('NavBarForm', () => {
             </Provider>
         );
         const longitudeInputElement =  getById<HTMLInputElement>(container, 'longitude');
-        await userEvent.type(longitudeInputElement, `-181[Enter]`);
-
+        const latitudeInputElement = getById<HTMLInputElement>(container, 'latitude');
+        const maxradiusInputElement = getById<HTMLInputElement>(container, 'maxradius');
+        await userEvent.type(longitudeInputElement, `-181`);
+        await userEvent.type(latitudeInputElement, "50");
+        await userEvent.type(maxradiusInputElement, "100[Enter]");
         expect(longitudeInputElement.value).toBe("");
     });
 
@@ -125,9 +170,12 @@ describe('NavBarForm', () => {
                 <NavBarForm />
             </Provider>
         );
+        const longitudeInputElement =  getById<HTMLInputElement>(container, 'longitude');
         const latitudeInputElement = getById<HTMLInputElement>(container, 'latitude');
-        await userEvent.type(latitudeInputElement, `-91[Enter]`);
-
+        const maxradiusInputElement = getById<HTMLInputElement>(container, 'maxradius');
+        await userEvent.type(latitudeInputElement, `-91`);
+        await userEvent.type(longitudeInputElement, "20");
+        await userEvent.type(maxradiusInputElement, "100[Enter]");
         expect(latitudeInputElement.value).toBe("");
     });
 

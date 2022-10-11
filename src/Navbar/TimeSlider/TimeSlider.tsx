@@ -183,7 +183,7 @@ export default function TimeSlider() {
             return `Data from ${firstText} to ${secondText}`
         } else if ( type == 2 ) {
             if(differenceText == 0 ) {
-                return `Data for current months`
+                return `Data for current month`
             } else {
                 return `Data from ${firstText} to ${secondText}`
             }
@@ -202,7 +202,7 @@ export default function TimeSlider() {
             const displayText = displayTypography(firstDraft, secondDraft, parseInt(type));
             return displayText;
         }
-        return 'Data for the today';
+        return 'Data for today';
     }
     
 
@@ -308,8 +308,8 @@ export default function TimeSlider() {
                         <TabContext value={tabValue}>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                 <TabList onChange={handleTabChange} aria-label="lab API tabs example">
-                                    <Tab label="Time Slider" value="1" />
-                                    <Tab label="Magnitude Slider" value="2" />
+                                    <Tab id="timeSlider" label="Time Slider" value="1" />
+                                    <Tab id="magSlider" label="Magnitude Slider" value="2" />
                                 </TabList>
                             </Box>
                             <TabPanel value="1">
@@ -353,9 +353,9 @@ export default function TimeSlider() {
                                     size="small"
                                     sx={{ marginBottom: 2 }}
                                 >
-                                    <ToggleButton value="1"><b>Minor</b></ToggleButton>
-                                    <ToggleButton value="2"><b>Medium</b></ToggleButton>
-                                    <ToggleButton value="3"><b>Major</b></ToggleButton>
+                                    <ToggleButton id="minor" value="1"><b>Minor</b></ToggleButton>
+                                    <ToggleButton id="medium" value="2"><b>Medium</b></ToggleButton>
+                                    <ToggleButton id="major"value="3"><b>Major</b></ToggleButton>
                                 </ToggleButtonGroup>
                                 <CustomMagSlider
                                     getAriaLabel={() => 'mag'}

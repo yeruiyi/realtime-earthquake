@@ -7,7 +7,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeOrderBy } from '../actions';
+import { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeOrderBy, changeTimeDifference } from '../actions';
 import './alertStyle.css';
 
 function format (inputDate: Date) {
@@ -107,6 +107,11 @@ export default function NavBarForm() {
 
       if (startTime != '' || endTime!='') {
         dispatch(changeNumOfDays('Select Period'));
+        const first = new Date(endTime)
+        const second = new Date(startTime)
+        const timeDifference = first.getTime() - second.getTime()
+        dispatch(changeTimeDifference(timeDifference))
+        console.log(timeDifference)
       }
       if (startTime != '') {
         dispatch(changeStartTime(startTime));

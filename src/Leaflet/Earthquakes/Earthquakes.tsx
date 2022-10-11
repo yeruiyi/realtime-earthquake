@@ -15,7 +15,7 @@ let geojson: GeoJSON;
 var focusMarker: L.Layer;
 var previousFocus = [0,0];
 export default function Earthquakes() {
-  const { startTime, endTime, longitude, latitude, maxradius, orderby, focusLat, focusLon, minlongitude, minlatitude, maxlongitude, maxlatitude, autoplayEnabled, difference, countEnabled,clusterEnabled, minMag, maxMag } = useSelector(({ navbar }: RooState) => navbar);
+  const { startTime, endTime, longitude, latitude, maxradius, orderby, focusLat, focusLon, minlongitude, minlatitude, maxlongitude, maxlatitude, autoplayEnabled,autoplayType, difference, countEnabled,clusterEnabled, minMag, maxMag } = useSelector(({ navbar }: RooState) => navbar);
   const [earthquakes, loading, eqCount] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag);
   const dispatch = useDispatch();
 
@@ -69,12 +69,20 @@ export default function Earthquakes() {
       }
     });
 
+    console.log(autoplayType)
+    var timeOut = 1000;
+    if (autoplayType == "1x" ){
+      timeOut = 1000;
+    } else if (autoplayType == "2x"){
+      timeOut = 500;
+    }
+    
     const sort = timeArray.sort((a, b) => a-b)
     for (let _i = 0; _i < sort.length; _i++) {
       (async () => {
-        var result = await new Promise(resolve => setTimeout(resolve, _i*2000)).then(() => autoPlayMarker(sort,_i))
+        var result = await new Promise(resolve => setTimeout(resolve, _i*timeOut)).then(() => autoPlayMarker(sort,_i))
         if  (_i == sort.length-1) {
-          result = await new Promise(resolve => setTimeout(resolve, 2000))
+          result = await new Promise(resolve => setTimeout(resolve, timeOut))
           // marker = autoPlayMarker(timeHash.get(sort[_i]))
           for (let _i = 0; _i < sort.length; _i++){
             var marker = timeHash.get(sort[_i])
