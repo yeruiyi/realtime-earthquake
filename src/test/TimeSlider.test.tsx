@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 import { renderWithProviders,getById } from "./test-util"
 import '@testing-library/jest-dom'
 
-describe('DropdownList', () => {
+describe('Time Slider', () => {
     const currentYear = new Date().getFullYear();
     test("should always show 2 tabs for switching the slider", async () => {
      

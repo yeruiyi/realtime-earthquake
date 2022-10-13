@@ -6,7 +6,7 @@ import fetch from 'jest-fetch-mock'
 
 
 
-describe('DropdownList', () => {
+describe('Display Count', () => {
     test("should always display 0 if data retrival is unsuccessful", async () => {
         fetch.mockResponseOnce(JSON.stringify({ }))
         renderWithProviders(<CountButton />);
