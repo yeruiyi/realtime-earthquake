@@ -17,13 +17,13 @@ import { useSelector } from 'react-redux';
 import { RooState } from '../../store';
 import { useEffect } from 'react';
 
-const options = ['1x', '2x'];
+const options = ['0.5x', '1x', '1.5x'];
 export default function AutoPlay() {
   const { clusterEnabled } = useSelector(({ navbar }: RooState) => navbar);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(1);
   const [btnDisabled, setBtnDisabled] = useState(false)
 
   useEffect(() => {

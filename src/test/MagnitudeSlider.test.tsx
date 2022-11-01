@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 import { renderWithProviders,getById } from "./test-util"
 import '@testing-library/jest-dom'
 
-describe('DropdownList', () => {
+describe('Magnitude slider', () => {
 
     
     test("should always switch to magnitude slider when magnitude tab is pressed", async () => {

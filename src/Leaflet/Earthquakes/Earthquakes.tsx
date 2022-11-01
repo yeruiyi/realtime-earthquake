@@ -71,10 +71,12 @@ export default function Earthquakes() {
 
     console.log(autoplayType)
     var timeOut = 1000;
-    if (autoplayType == "1x" ){
+    if (autoplayType == "0.5x" ){
       timeOut = 1000;
-    } else if (autoplayType == "2x"){
+    } else if (autoplayType == "1x"){
       timeOut = 500;
+    } else if (autoplayType == "1.5x"){
+      timeOut = 250;
     }
     
     const sort = timeArray.sort((a, b) => a-b)
@@ -122,17 +124,19 @@ export default function Earthquakes() {
       var customIcon = new L.Icon({
         iconUrl: require('../images/marker-icon.png'),
         shadowUrl: require('../images/marker-shadow.png'),
+        iconSize: [30, 46],
+        iconAnchor: [15, 46]
       });
   
       if (focusMarker) {
         map.removeLayer(focusMarker)
       }
   
-      focusMarker = new L.Marker([focusLat+0.0001, focusLon-0.00008], {icon: customIcon})
+      focusMarker = new L.Marker([focusLat, focusLon], {icon: customIcon})
       focusMarker.addTo(map)
   
-      map.flyTo(coordinates, 15, {
-        duration: 2
+      map.flyTo(coordinates, 13, {
+        duration: 3
       })
     }
   }, [earthquakes, map, clusterEnabled,focusLat,focusLon]);
