@@ -90,8 +90,8 @@ export default function TimeSlider() {
     const currentMonth = new Date().getMonth();
     const currentDate = new Date();
 
-    const [magType, setMagType] = useState('3');
-    const [magRange, setMagRange] = useState([7,10]);
+    const [magType, setMagType] = useState('');
+    const [magRange, setMagRange] = useState([10,10]);
     const [minMagRange, setMinMagRange] = useState(0);
     const [maxMagRange, setMaxMagRange] = useState(10);
 
