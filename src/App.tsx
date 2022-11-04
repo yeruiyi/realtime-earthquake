@@ -19,7 +19,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
-
 const drawerWidth = 400;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -41,6 +40,18 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   }),
 }));
 
+function useWindowSize() {
+  const [size, setSize] = React.useState([0, 0]);
+  React.useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
+}
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
@@ -74,6 +85,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function App() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [width, height] = useWindowSize();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -82,6 +94,36 @@ export default function App() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  var showCount = true;
+  var showSlider = true;
+  var showAutoplay = true;
+
+  console.log(width)
+  if (open && width <= 1167) {
+    showCount = false
+  } else if (!open && width <= 860) {
+    showCount = false
+  } else {
+    showCount = true
+  }
+
+  if ((open && width <= 1200) || (open && height<= 500)) {
+    showSlider = false
+  } else if ((!open && width <= 900) || (!open && height<= 500)) {
+    showSlider = false
+  } else {
+    showSlider = true
+  }
+
+  if ((open && width <= 790) || (open && height<= 250)) {
+    showAutoplay = false
+  } else if ((!open && width <= 500) || (!open && height<= 250)) {
+    showAutoplay = false
+  } else {
+    showAutoplay = true
+  }
+
+
   return (
     <>
       <Provider store={store}>
@@ -101,7 +143,7 @@ export default function App() {
               <Typography variant="h6" noWrap component="div">
               QuakeVisual
               </Typography>
-              <CountButton/>
+              {showCount? <CountButton/>:<></> }
             </Toolbar>
           </AppBar>
           <GlobalStyles 
@@ -134,8 +176,8 @@ export default function App() {
           <Main open={open} style={{ padding: 0 }}>
             <DrawerHeader />
             <Leaflet />
-            <TimeSlider/>
-            <AutoPlay/>
+            {showSlider? <TimeSlider/>:<></>}
+            {showAutoplay? <AutoPlay/>:<></>}
           </Main>
         </Box>
       </Provider>

@@ -7,8 +7,10 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeOrderBy, changeTimeDifference } from '../actions';
+import { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeOrderBy, changeTimeDifference, placeUserMarker, clearTimeSlider } from '../actions';
 import './alertStyle.css';
+import { useSelector } from 'react-redux';
+import { RooState } from '../../store';
 
 function format (inputDate: Date) {
   var date;
@@ -26,6 +28,13 @@ function isValidDate(inputDate: string) {
 }
 
 export default function NavBarForm() {
+  const { userMarkerPlaced } = useSelector(({ navbar }: RooState) => navbar);
+  var showRemoveButton;
+  if (userMarkerPlaced == "placed") {
+    showRemoveButton = true
+  } else {
+    showRemoveButton = false
+  }
   const dispatch = useDispatch();
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
@@ -107,6 +116,7 @@ export default function NavBarForm() {
 
       if (startTime != '' || endTime!='') {
         dispatch(changeNumOfDays('Select Period'));
+        dispatch(clearTimeSlider(true));
         const first = new Date(endTime)
         const second = new Date(startTime)
         const timeDifference = first.getTime() - second.getTime()
@@ -114,9 +124,11 @@ export default function NavBarForm() {
         console.log(timeDifference)
       }
       if (startTime != '') {
+        dispatch(clearTimeSlider(true));
         dispatch(changeStartTime(startTime));
       }
       if (endTime != ''){
+        dispatch(clearTimeSlider(true));
         dispatch(changeEndTime(endTime));
       }
   
@@ -169,6 +181,10 @@ export default function NavBarForm() {
     if (dropdownvalue) {
       setOrderBy(dropdownvalue);
     }
+  };
+
+  const removeMarkerHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    dispatch(placeUserMarker("removed"))
   };
 
   return (
@@ -286,6 +302,12 @@ export default function NavBarForm() {
           Search
         </button>
       </ButtonContainer>
+      {showRemoveButton ?  
+        <ButtonContainer>
+          <button className="btn btn-outline-success my-2 my-sm-0"  onClick={removeMarkerHandler} >
+            Remove
+          </button>
+        </ButtonContainer> : <></> } 
     </form>
   );
 }

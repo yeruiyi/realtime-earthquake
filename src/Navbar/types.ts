@@ -12,5 +12,7 @@ export default {
   timeDifferenceChanged:`${prefix}/timeDifferenceChanged`,
   countEnabledChanged:`${prefix}/countEnabledChanged`,
   clusterEnabledChanged:`${prefix}/clusterEnabledChanged`,
-  magRangeChanged:`${prefix}/magRangeChanged`
+  magRangeChanged:`${prefix}/magRangeChanged`,
+  userMarkerPlaced:`${prefix}/userMarkerPlaced`,
+  timeSliderCleared:`${prefix}/timeSliderCleared`,
 };

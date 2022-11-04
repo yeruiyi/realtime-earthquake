@@ -93,4 +93,19 @@ const changeMagRange = (minMag:string, maxMag:string): IAction => ({
   }
 });
 
-export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus, changeOrderBy, changeSearchRectangle, autoPlayTypeChanged, changeTimeDifference, changeCountEnabled, changeClusterEnabled, changeMagRange };
+const placeUserMarker = (userMarkerPlaced:string): IAction => ({
+  type: types.userMarkerPlaced,
+  payload: {
+    userMarkerPlaced,
+  }
+});
+
+const clearTimeSlider = (clear:boolean): IAction => ({
+  type: types.timeSliderCleared,
+  payload: {
+    clear,
+  }
+});
+
+
+export { changeStartTime, changeEndTime, changeNumOfDays, changeSearchCircle, changeFocus, changeOrderBy, changeSearchRectangle, autoPlayTypeChanged, changeTimeDifference, changeCountEnabled, changeClusterEnabled, changeMagRange, placeUserMarker, clearTimeSlider };

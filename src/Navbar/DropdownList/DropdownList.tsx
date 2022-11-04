@@ -9,7 +9,7 @@ import {
 
 import { Container } from './styles';
 import { RooState } from '../../store';
-import { changeStartTime, changeNumOfDays,changeSearchCircle,changeOrderBy } from '../actions';
+import { changeStartTime, changeNumOfDays,changeSearchCircle, clearTimeSlider } from '../actions';
 import convertDropdownValue from './utils';
 import { periods } from './constants';
 
@@ -29,6 +29,7 @@ export default function DropdownList() {
       dispatch(changeNumOfDays(dropdownvalue));
       dispatch(changeStartTime(convertDropdownValue(dropdownvalue)));
       dispatch(changeSearchCircle(null,null,null))
+      dispatch(clearTimeSlider(true));
     }
   };
 

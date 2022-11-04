@@ -7,7 +7,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
-import { changeStartTime, changeEndTime, changeTimeDifference, changeClusterEnabled, changeMagRange } from '../actions';
+import { changeStartTime, changeEndTime, changeTimeDifference, changeClusterEnabled, changeMagRange, changeNumOfDays, clearTimeSlider } from '../actions';
 import { styled as muiStyle } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
@@ -24,6 +24,8 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { useSelector } from 'react-redux';
 import { RooState } from '../../store';
 import { useEffect } from 'react';
+import Tooltip from '@mui/material/Tooltip';
+import './tooltipStyle.css';
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
@@ -73,7 +75,7 @@ function magTypography (value:number[]) {
 }
 
 export default function TimeSlider() {
-    const { autoplayEnabled } = useSelector(({ navbar }: RooState) => navbar);
+    const { autoplayEnabled, clear } = useSelector(({ navbar }: RooState) => navbar);
 
     const dispatch = useDispatch();
     const [expanded, setExpanded] = useState(true);
@@ -102,7 +104,20 @@ export default function TimeSlider() {
         } else {
             setSwitchDisabled(false)
         }
-    },[autoplayEnabled])
+
+        if (clear) {
+            if (rangeType === "1") {
+                setTimeRange([currentYear,currentYear])
+            }
+            if (rangeType === "2") {
+                setTimeRange([12,12])
+            }
+            if (rangeType === "3") {
+                setTimeRange([44,44])
+            }
+        }
+    },[autoplayEnabled,clear])
+
 
     const dates = (firstDraft: number , secondDraft: number ) => {
         const firstDate = new Date();
@@ -240,6 +255,8 @@ export default function TimeSlider() {
         dispatch(changeStartTime(firstDate.toISOString()));
         dispatch(changeEndTime(secondDate.toISOString()));
         dispatch(changeTimeDifference(timeDifference))
+        dispatch(changeNumOfDays('Select Period'));
+        dispatch(clearTimeSlider(false));
     }
 
     const handleClusterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -312,7 +329,7 @@ export default function TimeSlider() {
                                     <Tab id="magSlider" label="Magnitude Slider" value="2" />
                                 </TabList>
                             </Box>
-                            <TabPanel value="1">
+                            <TabPanel value="1"  style={ { overflow: 'visible' } }>
                                 <ToggleButtonGroup
                                     color="primary"
                                     value={rangeType}
@@ -321,9 +338,14 @@ export default function TimeSlider() {
                                     fullWidth={true}
                                     size="small"
                                     sx={{ marginBottom: 2 }}
-                                >
-                                    <ToggleButton id="year" value="1"><b>Year</b></ToggleButton>
-                                    <ToggleButton id="month" value="2"><b>Month</b></ToggleButton>
+                                    style={ { overflow: 'visible' } }
+                                >   
+                                    <Tooltip title="The data you are tring to request is too large, make sure you have selected a region or magnitude range before proceeding" placement="bottom" >
+                                        <ToggleButton id="year" value="1"><b>Year</b></ToggleButton>
+                                    </Tooltip>
+                                    <Tooltip title="The data you are tring to request is too large, make sure you have selected a region or magnitude range before proceeding" placement="bottom">
+                                        <ToggleButton id="month" value="2"><b>Month</b></ToggleButton>
+                                    </Tooltip>
                                     <ToggleButton id="date" value="3"><b>Date</b></ToggleButton>
                                 </ToggleButtonGroup>
                                 <CustomTimeSlider

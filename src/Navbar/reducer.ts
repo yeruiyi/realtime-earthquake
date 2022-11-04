@@ -23,6 +23,8 @@ interface IEarthquakesReducer {
   clusterEnabled:boolean;
   minMag: string;
   maxMag: string;
+  userMarkerPlaced: string;
+  clear: boolean;
 }
 
 const initialState: IEarthquakesReducer = {
@@ -45,8 +47,10 @@ const initialState: IEarthquakesReducer = {
   difference:0,
   countEnabled: true,
   clusterEnabled:false,
-  minMag:'0.01',
-  maxMag:'',
+  minMag:'0',
+  maxMag:'10',
+  userMarkerPlaced: 'none',
+  clear: false,
 };
 
 // eslint-disable-next-line default-param-last
@@ -121,6 +125,16 @@ export default (state = initialState, action: IAction) => {
         ...state,
         minMag: action.payload.minMag,
         maxMag: action.payload.maxMag,
+      };
+    case types.userMarkerPlaced:
+      return {
+        ...state,
+        userMarkerPlaced : action.payload.userMarkerPlaced,
+      };
+    case types.timeSliderCleared:
+      return {
+        ...state,
+        clear : action.payload.clear,
       };
     default:
       return state;

@@ -19,7 +19,7 @@ import { useEffect } from 'react';
 
 const options = ['0.5x', '1x', '1.5x'];
 export default function AutoPlay() {
-  const { clusterEnabled } = useSelector(({ navbar }: RooState) => navbar);
+  const { clusterEnabled, autoplayEnabled } = useSelector(({ navbar }: RooState) => navbar);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
@@ -27,16 +27,17 @@ export default function AutoPlay() {
   const [btnDisabled, setBtnDisabled] = useState(false)
 
   useEffect(() => {
-    if (clusterEnabled) {
-      setBtnDisabled(true)
-    } else {
+    if (!clusterEnabled && !autoplayEnabled) {
       setBtnDisabled(false)
+    } else if (clusterEnabled || autoplayEnabled) {
+      setBtnDisabled(true)
     }
-  },[clusterEnabled])
+  },[clusterEnabled, autoplayEnabled])
+
+
 
   const handleClick = () => {
     dispatch(autoPlayTypeChanged(true,options[selectedIndex]));
-    console.info(`You clicked ${options[selectedIndex]}`);
   };
 
   const handleMenuItemClick = (

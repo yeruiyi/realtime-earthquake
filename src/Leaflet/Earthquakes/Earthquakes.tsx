@@ -9,18 +9,55 @@ import { RooState } from '../../store';
 import { onEachFeature } from './utils';
 import { geojsonMarkerOptions, geojsonMarkerAutoplay } from '../utils';
 import { FeatureProps } from './models';
-import { autoPlayTypeChanged } from '../../Navbar/actions';
+import { autoPlayTypeChanged, placeUserMarker, changeFocus } from '../../Navbar/actions';
 
 let geojson: GeoJSON;
 var focusMarker: L.Layer;
 var previousFocus = [0,0];
 export default function Earthquakes() {
-  const { startTime, endTime, longitude, latitude, maxradius, orderby, focusLat, focusLon, minlongitude, minlatitude, maxlongitude, maxlatitude, autoplayEnabled,autoplayType, difference, countEnabled,clusterEnabled, minMag, maxMag } = useSelector(({ navbar }: RooState) => navbar);
+  const { startTime, endTime, longitude, latitude, maxradius, orderby, focusLat, focusLon, minlongitude, minlatitude, maxlongitude, maxlatitude, autoplayEnabled,autoplayType, difference, countEnabled,clusterEnabled, minMag, maxMag, userMarkerPlaced } = useSelector(({ navbar }: RooState) => navbar);
   const [earthquakes, loading, eqCount] = useEarthquakesFetcher(startTime, endTime, longitude, latitude, maxradius, orderby, minlongitude, minlatitude, maxlongitude, maxlatitude, countEnabled, minMag, maxMag);
   const dispatch = useDispatch();
 
   const map = useMap();
 
+  var customIcon = new L.Icon({
+    iconUrl: require('../images/marker-icon.png'),
+    shadowUrl: require('../images/marker-shadow.png'),
+    iconSize: [30, 46],
+    iconAnchor: [15, 46]
+  });
+
+
+  if ((map && focusLat !== 0 && focusLon !== 0 && previousFocus[0]!=focusLat && previousFocus[1]!=focusLon) || userMarkerPlaced  == "removed") {
+    previousFocus = [focusLat,focusLon];
+
+    const coordinates = latLng(focusLat, focusLon);
+
+    if (focusMarker || userMarkerPlaced  == "removed") {
+      map.removeLayer(focusMarker)
+      dispatch(placeUserMarker("none"))
+    }
+
+    var customIcon = new L.Icon({
+      iconUrl: require('../images/marker-icon.png'),
+      shadowUrl: require('../images/marker-shadow.png'),
+      iconSize: [30, 46],
+      iconAnchor: [15, 46]
+    });
+
+    if (userMarkerPlaced  !== "removed") {
+      focusMarker = new L.Marker([focusLat, focusLon], {icon: customIcon})
+      focusMarker.addTo(map)
+      dispatch(placeUserMarker("placed"))
+      dispatch(changeFocus(0,0,3))
+      map.flyTo(coordinates, 13, {
+        duration: 3
+      })
+
+    }
+  }
+  
   let timeHash = new Map()
   let timeArray: any[] = []
   function autoPlayMarker (markerArray: Array<number>,index: number){
@@ -95,7 +132,6 @@ export default function Earthquakes() {
         }
       })()
     }
-
   }
 
   useEffect(() => {
@@ -117,29 +153,8 @@ export default function Earthquakes() {
     }
 
     
-    if (map && focusLat !== 0 && focusLon !== 0 && previousFocus[0]!=focusLat && previousFocus[1]!=focusLon ) {
-      previousFocus = [focusLat,focusLon];
 
-      const coordinates = latLng(focusLat, focusLon);
-      var customIcon = new L.Icon({
-        iconUrl: require('../images/marker-icon.png'),
-        shadowUrl: require('../images/marker-shadow.png'),
-        iconSize: [30, 46],
-        iconAnchor: [15, 46]
-      });
-  
-      if (focusMarker) {
-        map.removeLayer(focusMarker)
-      }
-  
-      focusMarker = new L.Marker([focusLat, focusLon], {icon: customIcon})
-      focusMarker.addTo(map)
-  
-      map.flyTo(coordinates, 13, {
-        duration: 3
-      })
-    }
-  }, [earthquakes, map, clusterEnabled,focusLat,focusLon]);
+  }, [earthquakes, map, clusterEnabled, focusLat, focusLon, userMarkerPlaced]);
 
   if (loading) return <Spinner />;
 
