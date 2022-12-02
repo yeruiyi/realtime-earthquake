@@ -49,7 +49,6 @@ const getEarthquakes = async (starttime: string, endtime: string, longitude:numb
     }
 
   } catch (error) {
-    console.log('There was an error while getting the earthquakes', error);
     return [false,0,true];
   }
 };

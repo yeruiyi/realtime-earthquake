@@ -105,8 +105,7 @@ export default function Earthquakes() {
         return L.circleMarker(latlng, geojsonMarkerOptions(magnitude));
       }
     });
-
-    console.log(autoplayType)
+    
     var timeOut = 1000;
     if (autoplayType == "0.5x" ){
       timeOut = 1000;
@@ -122,7 +121,6 @@ export default function Earthquakes() {
         var result = await new Promise(resolve => setTimeout(resolve, _i*timeOut)).then(() => autoPlayMarker(sort,_i))
         if  (_i == sort.length-1) {
           result = await new Promise(resolve => setTimeout(resolve, timeOut))
-          // marker = autoPlayMarker(timeHash.get(sort[_i]))
           for (let _i = 0; _i < sort.length; _i++){
             var marker = timeHash.get(sort[_i])
             map.removeLayer(marker);

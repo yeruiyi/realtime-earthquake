@@ -308,9 +308,6 @@ export default function TimeSlider() {
         <SliderContainer>
             <Card>
                 <CustomeCardAction disableSpacing>
-                    {/* <Typography variant="h5" align="center">
-                        Query Earthquakes
-                    </Typography> */}
                     <ExpandMore
                         expand={expanded}
                         onClick={handleExpandClick}

@@ -121,7 +121,6 @@ export default function NavBarForm() {
         const second = new Date(startTime)
         const timeDifference = first.getTime() - second.getTime()
         dispatch(changeTimeDifference(timeDifference))
-        console.log(timeDifference)
       }
       if (startTime != '') {
         dispatch(clearTimeSlider(true));
@@ -230,26 +229,6 @@ export default function NavBarForm() {
         </InputGroup>
         <br/>
       </div>
-      {/* <div className="input-group">
-        <input
-          className="form-control"
-          id="startTime"
-          type={'date'}
-          value={startTime}
-          onChange={handleStartTimeChange}
-        />
-        <div className="input-group-append mr-sm-2">
-          <span className="input-group-text">
-            <Icon
-              className={`fa fa-${ 'calendar'}`}
-              tabIndex={0}
-              role="button"
-              onClick={changeIcon}
-              onKeyDown={() => {}}
-            />
-          </span>
-        </div>
-      </div> */}
       <div>
         <StartTimeInput
           className="form-control mr-sm-2"

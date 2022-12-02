@@ -98,7 +98,6 @@ export default function App() {
   var showSlider = true;
   var showAutoplay = true;
 
-  console.log(width)
   if (open && width <= 1167) {
     showCount = false
   } else if (!open && width <= 860) {
@@ -184,10 +183,4 @@ export default function App() {
     </>
   );
 }
-
-// const GlobalStyle = createGlobalStyle`
-//   body {
-//     margin-left: 10%;
-//   }
-// `;
 
